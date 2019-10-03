@@ -5,7 +5,7 @@ class Login:
     def startLogin(self):
         loginRetries = 0
         while(loginRetries < 3):
-            username = input("Enter in Username: ")
+            username = input("Enter in E-Mail Address: ")
             password = input("Enter in Password: ")
             
             results = self.myDB.queryDB("SELECT EXISTS(SELECT * FROM Employee WHERE Email is \'" +
