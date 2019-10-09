@@ -1,2 +1,4 @@
 language: python
 install: skip
+script:
+  - pytest
