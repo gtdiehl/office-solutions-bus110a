@@ -20,6 +20,7 @@ class Database:
 
         except sqlite3.Error as e:
             print(e)
+            return False
 
     def _disconnectUserDB(self):
         self.dbConn.close()
@@ -32,6 +33,7 @@ class Database:
             results = cur.fetchall()
             self._disconnectUserDB()
         except sqlite3.Error as e:
+            results = None
             print(e)
         return results
 
