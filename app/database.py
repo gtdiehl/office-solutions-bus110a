@@ -3,7 +3,7 @@ import sqlite3
 
 class Database:
     def __init__(self, _user_db_name='OS_Employee.db'):
-        self._user_db_name = _user_db_name
+        self._user_db_name = str(_user_db_name)
 
     def _connect_user_db(self):
         # Connect to the Database
