@@ -2,8 +2,8 @@ import sqlite3
 
 
 class Database:
-    def __init__(self):
-        self._user_db_name = 'OS_Employee.db'
+    def __init__(self, _user_db_name='OS_Employee.db'):
+        self._user_db_name = _user_db_name
 
     def _connect_user_db(self):
         # Connect to the Database
@@ -40,7 +40,7 @@ class Database:
 
     def insert_user_db(self, insert_statement):
         try:
-            self._connectUserDB()
+            self._connect_user_db()
             cur = self.db_conn.cursor()
             cur.execute(insert_statement)
             self.db_conn.commit()
