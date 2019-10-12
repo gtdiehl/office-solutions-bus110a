@@ -5,7 +5,7 @@ import sqlite3
 @pytest.fixture(scope="session")
 def setup_db(tmpdir_factory):
     file = tmpdir_factory.mktemp("data").join("OS_Employee.db")
-    conn = sqlite3.connect(file)
+    conn = sqlite3.connect(str(file))
     conn.execute("CREATE TABLE Employee (EmployeeID, FirstName, LastName, Email, Password)")
     conn.execute("INSERT INTO \"Employee\" VALUES (\'1005\',\'Nora\',\'Chang\',\'nora.chang@gmail.com\',\'nora\');")
     conn.execute("INSERT INTO \"Employee\" VALUES (\'1006\',\'Elanor\',\'White\',\'elanor.white@gmail.com\'" +
