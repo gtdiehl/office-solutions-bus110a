@@ -52,7 +52,10 @@ class Database:
 
     def query_user_db(self, query_statement):
         """
-        Queries the Employee database
+        Queries the Employee database.
+        Will only return the first column from the SQL Select statement.
+        For example 'SELECT * FROM Employee' will return only a list of Employee IDs.
+        TODO: Make the method return all columns OR create a different method to return all columns.
 
         Args:
             query_statement (str): String should conform the the standard SQL format
