@@ -24,7 +24,7 @@ class login:
                                    password + "\')")
 
             if results == [1]:
-                print("Login Sucessful ")
+                print("Login Successful ")
                 login_successful = True
                 break
                 
