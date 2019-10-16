@@ -17,9 +17,9 @@ class Database:
 
     def _connect_user_db(self):
         """
-        Method to connect to the SQLite3 database.
+        Helper method to connect to the SQLite3 database.
         This is a private (internal) method NOT to be called directly.
-        Please use a helper method such as 'query_user_db' method
+        Please use a method such as 'query_user_db' method
         """
         try:
             # Connect to the Database file
@@ -43,12 +43,66 @@ class Database:
 
     def _disconnect_user_db(self):
         """
-        Method to connect to the SQLite3 database.
+        Helper method to connect to the SQLite3 database.
         This is a private (internal) method NOT to be called directly.
-        Please use a helper method such as 'query_user_db' method
+        Please use a method such as 'query_user_db' method
         """
         # Closes the database connection.
         self.db_conn.close()
+
+    def _query_statement(self, query_statement):
+        """
+        Helper method to query the SQLite3 database.
+        This method is used to reduce redundant code.
+        This is a private (internal) method NOT to be called directly.
+        Please use a method such as 'query_user_db' method
+        """
+        results = []
+        try:
+            # Connects to the database
+            self._connect_user_db()
+            # Cursor object is required to fetch data from the database.
+            cur = self.db_conn.cursor()
+            # Executes the SQL statement against the database.
+            cur.execute(query_statement)
+            # All records are returned from the database to the results object.
+            results = cur.fetchall()
+            # Disconnects from the database.
+            self._disconnect_user_db()
+        except sqlite3.Error as e:
+            print("[ERROR] " + str(e))
+
+        # Returns the result object.
+        return results
+
+    def _commit_statement(self, commit_statement):
+        """
+        Helper method to run statements against the SQLite3 database that require a commit.
+        This method is used to reduce redundant code.
+        This is a private (internal) method NOT to be called directly.
+        Please use a method such as 'insert_user_db' method
+        """
+        try:
+            # Connects to the database
+            self._connect_user_db()
+            # Cursor object is required to insert data from the database.
+            cur = self.db_conn.cursor()
+            # Executes the SQL statement against the database.
+            cur.execute(commit_statement)
+            # Commits the data to the database.  It is now saved.
+            self.db_conn.commit()
+            total_changes = self.db_conn.total_changes
+            # Disconnects from the database.
+            self._disconnect_user_db()
+        except sqlite3.Error as e:
+            print("[ERROR] " + str(e))
+            return False
+
+        # Returns true if the insert was a success.  Success is when more than zero changes occur.
+        if total_changes > 0:
+            return True
+        else:
+            return False
 
     def query_user_db(self, query_statement):
         """
@@ -66,24 +120,7 @@ class Database:
         Returns:
             results: List type object with the database result set
         """
-        try:
-            # Connects to the database
-            self._connect_user_db()
-            # Cursor object is required to fetch data from the database.
-            cur = self.db_conn.cursor()
-            # Executes the SQL statement against the database.
-            cur.execute(query_statement)
-            # All records are returned from the database to the results object.
-            results = cur.fetchall()
-            # Disconnects from the database.
-            self._disconnect_user_db()
-        except sqlite3.Error as e:
-            # When an exception occurs the results object is empty, so we make sure no incorrect
-            # data is returned by the method.
-            results = None
-            print(e)
-        # Returns the result object.
-        return results
+        return self._query_statement(query_statement)
 
     def insert_user_db(self, insert_statement):
         """
@@ -98,31 +135,14 @@ class Database:
         Returns:
             bool: The return value.  True for success, False otherwise.
         """
-        try:
-            # Connects to the database
-            self._connect_user_db()
-            # Cursor object is required to insert data from the database.
-            cur = self.db_conn.cursor()
-            # Executes the SQL statement against the database.
-            cur.execute(insert_statement)
-            # Commits the data to the database.  It is now saved.
-            self.db_conn.commit()
-            # Disconnects from the database.
-            self._disconnect_user_db()
-            # Returns true if the insert was a success.
-            return True
-        except sqlite3.Error as e:
-            print(e)
-            # Returns false if there is a failure when inserting data into the database.
-            return False
+        return self._commit_statement(insert_statement)
 
-    def delete_user_db(self, delete_user_email):
+    def delete_user_db(self, delete_statement):
         """
-        Deletes a user from the Employee database
+        Deletes data from the Employee database
 
         Args:
-            delete_user_email (str): The specified user's e-mail address will be to query the database
-                                     and remove that user from the database.
+            delete_statement (str): String should conform the the standard SQL format
 
         Raises:
             sqlite3.Error: Catch all for all SQLite3 exception types
@@ -130,4 +150,4 @@ class Database:
         Returns:
             bool: The return value.  True for success, False otherwise.
         """
-        pass
+        return self._commit_statement(delete_statement)
