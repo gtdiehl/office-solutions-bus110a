@@ -2,7 +2,7 @@ import pytest
 import sqlite3
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def setup_db(tmpdir_factory):
     file = tmpdir_factory.mktemp("data").join("OS_Employee.db")
     conn = sqlite3.connect(str(file))
