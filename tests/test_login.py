@@ -14,7 +14,7 @@ class TestLogin:
 
         output = get_display_output()
 
-        assert output == ["Please enter email: ", "Please enter password: "]
+        assert output == ["Please enter email: ", "Please enter password: ", "Login Successful"]
 
 
     def test_login_failure(self, setup_db):
