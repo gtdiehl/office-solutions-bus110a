@@ -24,12 +24,17 @@ class login:
                                    password + "\')")
 
             if results == [1]:
-                print("Login Successful ")
+                print("Login Successful")
                 login_successful = True
                 break
+            else:
+                if i > 1:
+                    print("Unsuccessful login attempt.  Please try again.")
+                else:
+                    print("Unsuccessful login attempt.")
                 
         if login_successful == True:
             return True
         else:
-            print("Contact admin")
+            print("Please contact your administrator for your login credentials.")
             return False
