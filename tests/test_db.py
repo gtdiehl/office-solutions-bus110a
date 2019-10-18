@@ -26,14 +26,20 @@ class TestDB:
         with pytest.raises(Exception):
             assert test_db.query_user_db(test_input)
 
-    @pytest.mark.parametrize("test_input,expected",
-                             [("INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, Password) " +
-                              "VALUES (9999,'Py','Tester','py.tester@gmail.com','py')", True)
-                              ])
-    def test_insert_user_db(self, setup_db, test_input, expected):
+    @pytest.mark.parametrize("employee_id, first_name, last_name, email, password",
+                             [(9999, 'Py', 'Tester', 'py.tester@gmail.com', 'py')])
+    def test_insert_user_db(self, setup_db, employee_id, first_name, last_name, email, password):
         db = Database(setup_db)
-        results = db.insert_user_db(test_input)
-        assert results == expected
+        insert_statement = "INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, Password) " + \
+                           "VALUES (" + str(employee_id) + ",'" + first_name + "','" + last_name + "','" + email + \
+                           "','" + password + "')"
+        query_statement = "SELECT EXISTS(SELECT * FROM Employee WHERE EmployeeID is " + str(employee_id) + \
+                          " AND FirstName is '" + first_name + "' AND LastName is '" + last_name + \
+                          "' AND Email is '" + email + "' AND Password is '" + password + "')"
+        insert_results = db.insert_user_db(insert_statement)
+        query_results = db.query_user_db(query_statement)
+        assert insert_results == True
+        assert query_results[0] == 1
 
     @pytest.mark.parametrize("test_input",
                              [("INSERT INTO Employee (EmployeeID, FirstName, LastName, Email) " +
