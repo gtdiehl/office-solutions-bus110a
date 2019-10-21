@@ -8,7 +8,7 @@ def main():
     mylogin = loginfunction.login(mydb)
 
     if mylogin.login() is True:
-        BestMenu.createBestMenu()
+        menu_module.BestMenu(mydb).createBestMenu()
 
 if __name__ == "__main__":
     main()
