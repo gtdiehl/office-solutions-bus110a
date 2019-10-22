@@ -58,19 +58,21 @@ class BestMenu:
         return True
 
     def _user_submenu_loop(self):
-        print("----------[User Administration Menu]----------")
-        print("" +
-              "[1] Add New User\n" +
-              "[2] Delete Existing User\n" +
-              "")
-        ans = input("Please enter an option [1-2, r to Return to the Main Menu] : ")
-        if ans == "1":
-            pass
-        elif ans == "2":
-            deleteuserfunction.deleteuser(self.myDB)
-        elif ans == "r" or ans == "R":
-            self._menuLoop()
-        elif ans == "":
-            print("\nNot a valid choice. Please try again.")
-        else:
-            print("\nNot a valid choice. Please try again.")
+        ans = True
+        while ans:
+            print("----------[User Administration Menu]----------")
+            print("" +
+                  "[1] Add New User\n" +
+                  "[2] Delete Existing User\n" +
+                  "")
+            ans = input("Please enter an option [1-2, r to Return to the Main Menu] : ")
+            if ans == "1":
+                pass
+            elif ans == "2":
+                deleteuserfunction.deleteuser(self.myDB)
+            elif ans == "r" or ans == "R":
+                ans = False
+            elif ans == "":
+                print("\nNot a valid choice. Please try again.")
+            else:
+                print("\nNot a valid choice. Please try again.")
