@@ -4,7 +4,6 @@ Created on Mon Oct 21 10:46:21 2019
 
 @author: Admin
 """
-import database
 
 
 def deleteuser(mydb):
@@ -20,6 +19,8 @@ def deleteuser(mydb):
             
             userdeleted = mydb.delete_user_db("DELETE FROM Employee WHERE Email is +\'" + condel_email + 
                                               "\'")
+            if userdeleted:
+                print("User %s is deleted" % condel_email )
             return userdeleted
         else:
             print("You have entered email that is not in the database, try again")
@@ -31,7 +32,3 @@ def deleteuser(mydb):
                  
             
                          
-if __name__ == "__main__":
-    mydb = database.Database()
-    result = deleteuser(mydb)
-    print("Result: " + str(result))
