@@ -110,4 +110,4 @@ venv.bak/
 .mypy_cache/
 
 # Database files
-app/*.db
+app/OS_Employee.db
