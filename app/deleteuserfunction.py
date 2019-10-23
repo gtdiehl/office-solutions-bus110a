@@ -9,7 +9,7 @@ Created on Mon Oct 21 10:46:21 2019
 def deleteuser(mydb):
     while True:
         
-        del_email = input("Enter email to delete: ")
+        del_email = input("Email is case-sensitive; Enter email to delete: ")
         results = mydb.query_user_db("SELECT EXISTS(SELECT * FROM Employee WHERE Email is \'" +
                                        del_email + "\')")
         if results[0] == 1:

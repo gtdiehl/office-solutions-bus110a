@@ -34,7 +34,7 @@ class UserController:
     
     def addNewUser(self):
         
-        print("Enter new user information")
+        print("Enter new user information, all information is case-sensitive.")
         while(True):
             newFirstName = input("First Name: ")
             if(self._verifyUserName(newFirstName) == False):
