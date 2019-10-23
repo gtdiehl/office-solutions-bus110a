@@ -29,9 +29,9 @@ class login:
                 break
             else:
                 if i > 1:
-                    print("Unsuccessful login attempt.  Please try again.")
+                    print("Unsuccessful login attempt.  Please try again. E-Mail and Password are case-sensitive.")
                 else:
-                    print("Unsuccessful login attempt.")
+                    print("Unsuccessful login attempt. E-Mail and Password are case-sensitive.")
                 
         if login_successful == True:
             return True
