@@ -20,10 +20,10 @@ def _menuloop():
     print("===============================================")
     menu_selection = input("Please enter an option [1-2, q to Quit] : ")
     if menu_selection == "1":
-        pass
-    elif menu_selection == "2":
         if mylogin.login() is True:
             return menu_module.BestMenu(mydb).createBestMenu()
+    elif menu_selection == "2":
+        pass
     elif menu_selection == "q" or menu_selection == "Q":
         print("\nGoodbye!")
         return False
