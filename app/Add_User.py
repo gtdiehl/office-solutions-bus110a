@@ -42,7 +42,7 @@ class UserController:
                 print("First name can not be blank.  Please enter a first name.")
                 continue
             if not self._verifyUserName(newFirstName):
-                print("First name contains invalid characters. First name must only contain Alpabetic charaters, "
+                print("First name contains invalid characters. First name must only contain Alphabetic characters, "
                       "no Spaces, no Numbers, or no Special Characters are allow." +
                       "\nPlease ee-enter a first name")
                 continue
