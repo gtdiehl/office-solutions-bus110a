@@ -1,3 +1,4 @@
+import Add_User
 import database
 import loginfunction
 import menu_module
@@ -23,7 +24,7 @@ def _menuloop():
         if mylogin.login() is True:
             return menu_module.BestMenu(mydb).createBestMenu()
     elif menu_selection == "2":
-        pass
+        Add_User.UserController(mydb).addNewUser()
     elif menu_selection == "q" or menu_selection == "Q":
         print("\nGoodbye!")
         return False

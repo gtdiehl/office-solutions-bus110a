@@ -7,6 +7,7 @@ Created on Wed Oct 16 18:35:22 2019
 """
 
 import deleteuserfunction
+import Add_User
 
 
 class BestMenu:
@@ -48,7 +49,7 @@ class BestMenu:
                   "")
             menu_selection = input("Please enter an option [1-2, r to Return to the Main Menu] : ")
             if menu_selection == "1":
-                pass
+                Add_User.UserController(self.myDB).addNewUser()
             elif menu_selection == "2":
                 deleteuserfunction.deleteuser(self.myDB)
             elif menu_selection == "r" or menu_selection == "R":
