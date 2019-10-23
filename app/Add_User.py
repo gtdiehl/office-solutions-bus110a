@@ -99,7 +99,7 @@ class UserController:
                               str(newUserID) + ",'" + newFirstName + "','" + newLastName + "','" + newEmailAddress + \
                               "','" + newUserPassword + "')"
             if self.myDB.insert_user_db(insertStatement):
-                print("\n New User was successfully added")
+                print("\n New User was successfully added\n")
             else:
                 print("\n[ERROR] New User was not added!")
         else:
