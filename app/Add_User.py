@@ -76,11 +76,11 @@ class UserController:
             else:
                 break
         
-        results = self.myDB.queryDB("SELECT EXISTS(SELECT * FROM Employee WHERE Email is \'" + newEmailAddress + "\')")
+        results = self.myDB.query_user_db("SELECT EXISTS(SELECT * FROM Employee WHERE Email is \'" + newEmailAddress + "\')")
         if(results[0] == 0):
             newUserID = self._getNextUserID()
             insertStatement = "INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, Password) VALUES (" + str(newUserID) + ",'" + newFirstName + "','" + newLastName + "','" + newEmailAddress + "','" + newUserPassword + "')"
-            if(self.myDB.insertDB(insertStatement)):
+            if(self.myDB.insert_user_db(insertStatement)):
                 print("\n New User was successfully added")
             else:
                 print("\n[ERROR] New User was not added!")
@@ -89,7 +89,7 @@ class UserController:
             
     def _getNextUserID(self):
         userID = 0
-        results = self.myDB.queryDB("SELECT EmployeeID from Employee ORDER BY EmployeeID")
+        results = self.myDB.query_user_db("SELECT EmployeeID from Employee ORDER BY EmployeeID")
         userID = int(max(results)) + 1
             
         return userID
