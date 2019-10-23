@@ -21,7 +21,7 @@ class BestMenu:
         return ans
     
     def _menuLoop(self):
-        print("----------[Main Menu]----------")
+        print("\n----------[Main Menu]----------")
         print("" +
               "[1] Report Menu\n" +
               "[2] User Administration Menu\n" +
@@ -42,7 +42,7 @@ class BestMenu:
 
     def _user_submenu_loop(self):
         while True:
-            print("----------[User Administration Menu]----------")
+            print("\n----------[User Administration Menu]----------")
             print("" +
                   "[1] Add New User\n" +
                   "[2] Delete Existing User\n" +
