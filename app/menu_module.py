@@ -7,6 +7,7 @@ Created on Wed Oct 16 18:35:22 2019
 """
 
 import deleteuserfunction
+import Add_User
 
 
 class BestMenu:
@@ -20,7 +21,7 @@ class BestMenu:
         return ans
     
     def _menuLoop(self):
-        print("----------[Main Menu]----------")
+        print("\n----------[Main Menu]----------")
         print("" +
               "[1] Report Menu\n" +
               "[2] User Administration Menu\n" +
@@ -41,14 +42,14 @@ class BestMenu:
 
     def _user_submenu_loop(self):
         while True:
-            print("----------[User Administration Menu]----------")
+            print("\n----------[User Administration Menu]----------")
             print("" +
                   "[1] Add New User\n" +
                   "[2] Delete Existing User\n" +
                   "")
             menu_selection = input("Please enter an option [1-2, r to Return to the Main Menu] : ")
             if menu_selection == "1":
-                pass
+                Add_User.UserController(self.myDB).addNewUser()
             elif menu_selection == "2":
                 deleteuserfunction.deleteuser(self.myDB)
             elif menu_selection == "r" or menu_selection == "R":
