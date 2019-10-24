@@ -1,35 +1,56 @@
-import re
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Oct 21 13:33:07 2019
 
-class UserController:
-    def __init__(self, myDB):
-        self.myDB = myDB
-    
-    def _verifyUserName(self, inputText):
-       # RegEx Search will return None if the string only contains letters
-        # If Numbers, Special Characters, Spaces, etc... are found
-        # function will return a fail message
-        
-        if((re.search(r'[^a-zA-Z]', inputText)) is None):
-            
-            return True
+@author: joel
+"""
+
+def addNewUser(self):
+    print("Please Enter New User Information")
+    while (True):
+        newFirstName = input("Enter First Name: ")
+        if(self._ValidateUserNameInput(newFirstName) == False):
+            print("First name contains invalid characters. Use Alphabetic characters." + "\nEnter First Name: ")
+            continue
         else:
-            return False
-    
-    def _verifyPassword(self, password):
-        # Password can only consist of at least 8 characters
-        # only limited to letters and numbers.
-        if(re.match(r'[a-zA-Z0-9]{8,}', password) is not None):
-            return True
+            break
+    while (True):
+        newLastName = input("Enter Last Name: ")
+        if(self._ValidateUserNameInput(newLastName) == False):
+            print("Last name contains invalid characters. Only use Alphabetic Characters" + "\nEnter Last Name: ")
+            continue
         else:
-            return False
-    
-    def _verifyEmailAddress(self, address):
-        # RegEx will validate the E-Mail Address based on RFC 5322
-        # If the e-mail address is not in the proper format the function
-        # will return False
-        if(re.search(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', address) is not None):
-            return True
+            break
+    while (True):
+        newEmail = input("Enter E-Mail Address: ")
+        if(self._ValidateEmailInput(newEmail) == False):
+            print("E-Mail contains invalid characters." + "\nEnter E-Mail: ")
+            continue
         else:
+<<<<<<< HEAD
+            break
+    while (True):
+        newUserPass = input("Enter Password: ")
+        newUserPassRe = input("Re-Enter Password: ")
+        if((newUserPass == newUserPassre) == False):
+            print("Password contains invalid characters." + "\Re-Enter Password: ")
+            continue
+        else:
+            break
+   results = self.myDB ("SELECT EXISTS(SELECT * FROM Employee WHERE Email is \'" +
+                                   email + "\' AND Password is \'" +
+                                   password + "\')")
+      if(results[0] == 0):
+          newUserID = self._getNextUserID()
+          insertStatement = "Insert INTO employee VALUES ( EmployeeID, FirstName, LastName, Email, Password) VALUES (" + str(newUserID) + ",'" + newFirstName + "','" + newLastName + "','" + newEmail + "','" + newUserPass + "')"
+          if (self.myDB.insertDB(insertStatement)):
+              print("New User was successfully added")
+          else:
+              print("[ERROR] New user was not added")
+              
+    
+=======
             return False
     
     def addNewUser(self):
@@ -76,11 +97,11 @@ class UserController:
             else:
                 break
         
-        results = self.myDB.queryDB("SELECT EXISTS(SELECT * FROM Employee WHERE Email is \'" + newEmailAddress + "\')")
+        results = self.myDB.query_user_db("SELECT EXISTS(SELECT * FROM Employee WHERE Email is \'" + newEmailAddress + "\')")
         if(results[0] == 0):
             newUserID = self._getNextUserID()
             insertStatement = "INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, Password) VALUES (" + str(newUserID) + ",'" + newFirstName + "','" + newLastName + "','" + newEmailAddress + "','" + newUserPassword + "')"
-            if(self.myDB.insertDB(insertStatement)):
+            if(self.myDB.insert_user_db(insertStatement)):
                 print("\n New User was successfully added")
             else:
                 print("\n[ERROR] New User was not added!")
@@ -89,7 +110,8 @@ class UserController:
             
     def _getNextUserID(self):
         userID = 0
-        results = self.myDB.queryDB("SELECT EmployeeID from Employee ORDER BY EmployeeID")
+        results = self.myDB.query_user_db("SELECT EmployeeID from Employee ORDER BY EmployeeID")
         userID = int(max(results)) + 1
             
         return userID
+>>>>>>> ebb18bbf9231f983abccef64e94a713d6b0bac92
