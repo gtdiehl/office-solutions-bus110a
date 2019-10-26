@@ -38,7 +38,7 @@ class UserController:
         try:
             v = validate_email(address)  # validate and get info
             email = v["email"]  # replace with normalized form
-            return  True
+            return True
         except EmailNotValidError as e:
             # email is not valid, exception message is human-readable
             print(str(e) + " Please enter in a valid domain name.")
