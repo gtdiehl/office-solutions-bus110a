@@ -1,9 +1,10 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
     name='office_solutions_app',
     packages=['app'],
     version='0.0.1',
     description='',
-    url='', requires=['email_validator']
+    url='',
+    install_requires=['email_validator']
 )
