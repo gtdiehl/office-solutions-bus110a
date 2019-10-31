@@ -25,12 +25,14 @@ class TestUser:
         assert user._verifyUserName(test_input) == expected
 
     @pytest.mark.parametrize("test_input,expected",
-                             [("1", False),
-                              ("1234567", False),
-                              ("abcdefg", False),
+                             [("1", True),
+                              ("1234567", True),
+                              ("abcdefg", True),
                               ("12345678", True),
                               ("mypassis__", False),
-                              ("password@@", False)])
+                              ("password@@", False),
+                              ("1234567890123", True),
+                              ("123456789012", True)])
     def test_verify_password(self, setup_db, test_input, expected):
         mydb = Database(setup_db)
         user = UserController(mydb)
