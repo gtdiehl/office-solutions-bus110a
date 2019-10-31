@@ -6,5 +6,5 @@ setup(
     version='0.0.1',
     description='',
     url='',
-    install_requires=['email_validator']
+    install_requires=['email_validator', 'pandas']
 )
