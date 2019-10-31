@@ -8,6 +8,7 @@ Created on Wed Oct 16 18:35:22 2019
 
 import deleteuserfunction
 import Add_User
+import reports
 
 
 class BestMenu:
@@ -28,7 +29,7 @@ class BestMenu:
               "")
         menu_selection = input("Please enter an option [1-2, q to Quit] : ")
         if menu_selection == "1":
-            pass
+            self._report_submenu_loop()
         elif menu_selection == "2":
             self._user_submenu_loop()
         elif menu_selection == "q" or menu_selection == "Q":
@@ -58,3 +59,32 @@ class BestMenu:
                 print("\nNot a valid choice. Please try again.")
             else:
                 print("\nNot a valid choice. Please try again.")
+                
+    def _report_submenu_loop(self):
+        while True:
+            print("\n----------[Report Menu]----------")
+            print("" +
+                  "[1] Run Most Profitable Product Report\n" +
+                  "[2] Run Least Profitable Product Report\n" +
+                  "")
+            menu_selection = input("Please enter an option [1-2, r to Return to the Main Menu] : ")
+            if menu_selection == "1":
+                self.prompt_for_filter_info()
+            elif menu_selection == "2":
+                self.prompt_for_filter_info()
+            elif menu_selection == "r" or menu_selection == "R":
+                break
+            elif menu_selection == "":
+                print("\nNot a valid choice. Please try again.")
+            else:
+                print("\nNot a valid choice. Please try again.")
+                
+    def prompt_for_filter_info(self):
+        month = input("What Month?")
+        year = input("What Year?")
+        
+        '''
+        Run report function using the above inputs
+        '''
+        reports.top_ten_profits(month, year)
+        print("Running report for period %s/%s" % (month, year))
