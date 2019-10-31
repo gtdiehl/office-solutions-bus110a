@@ -12,15 +12,14 @@ class UserController:
         # function will return a fail message
         
         if (re.search(r'[^a-zA-Z]', inputText)) is None:
-            
             return True
         else:
             return False
     
     def _verifyPassword(self, password):
-        # Password can only consist of at least 8 characters
-        # only limited to letters and numbers.
-        if re.match(r'[a-zA-Z0-9]{8,12}', password) is not None:
+        # Limited to only letters and numbers.
+        string = re.search(r'[^a-zA-Z0-9.]', password)
+        if not bool(string):
             return True
         else:
             return False
@@ -85,16 +84,27 @@ class UserController:
         while True:
             newUserPassword = input("Password: ")
             if newUserPassword is "":
-                print("Password can not be blank.  Please enter a password with at least 8 characters in length, "
-                      "only letters and numbers are allowed")
+                print("Password can not be blank. Please enter a password with only letters and numbers.")
+                continue
+            if len(newUserPassword) < 8 or len(newUserPassword) > 12:
+                print("Password can only have a minimum of 8 characters to a maximum of 12 characters.")
                 continue
             if not self._verifyPassword(newUserPassword):
-                print("Password does not meet requirements." +
-                      "\nMust be at least 8 to 12 characters in length, only letters and numbers are allowed" +
-                      "\nRe-enter Password")
+                print("Password does not meet requirements. Password contains invalid characters. Please "
+                      "enter a password with only letters and numbers.")
                 continue
                 
             newUserPasswordVerification = input("Re-Enter Password: ")
+            if newUserPasswordVerification is "":
+                print("Password can not be blank. Please enter a password with only letters and numbers.")
+                continue
+            if len(newUserPasswordVerification) < 8 or len(newUserPasswordVerification) > 12:
+                print("Password can only have a minimum of 8 characters to a maximum of 12 characters.")
+                continue
+            if not self._verifyPassword(newUserPasswordVerification):
+                print("Password does not meet requirements. Password contains invalid characters. Please"
+                      "enter a password with only letters and numbers.")
+                continue
             if not (newUserPassword == newUserPasswordVerification):
                 print("Passwords do not match. Re-enter password")
                 continue
