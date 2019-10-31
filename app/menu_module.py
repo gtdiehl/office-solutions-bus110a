@@ -80,11 +80,13 @@ class BestMenu:
                 print("\nNot a valid choice. Please try again.")
                 
     def prompt_for_filter_info(self):
-        month = input("What Month?")
-        year = input("What Year?")
+        from_month = int(input("What Month?"))
+        from_year = int(input("What Year?"))
+        to_month = int(input("What Month?"))
+        to_year = int(input("What Year?"))
         
         '''
         Run report function using the above inputs
         '''
-        reports.top_ten_profits(month, year)
-        print("Running report for period %s/%s" % (month, year))
+        reports.top_ten_profits(from_month, from_year, to_month, to_year)
+        print("Running report for period from %d/%d to %d/%d" % (from_month, from_year, to_month, to_year))
