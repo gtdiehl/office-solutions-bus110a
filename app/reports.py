@@ -16,12 +16,12 @@ ordersinfo = OrdersOnlyData[["Order Date","Product Name","Quantity","Profit",]]
 
 
 def top_ten_profits(from_month, from_year, to_month, to_year):
-            prodcol_and_profcol = OrdersOnlyData[["Order Date", "Product Name","Profit"]]
-            
-            fitered_df = _filter_df_by_date(prodcol_and_profcol, "Order Date", from_month, from_year, to_month, to_year)
-            
-            most_profit = fitered_df.sort_values(by= "Profit", ascending = False)
-            Pandas_Format.print_report(most_profit, 10)
+    prodcol_and_profcol = OrdersOnlyData[["Order Date", "Product Name","Profit"]]
+
+    fitered_df = _filter_df_by_date(prodcol_and_profcol, "Order Date", from_month, from_year, to_month, to_year)
+
+    most_profit = fitered_df.sort_values(by= "Profit", ascending = False)
+    Pandas_Format.print_report(most_profit, 10)
 
 
 def top_ten_profit_ave(from_month, from_year, to_month, to_year):
@@ -34,9 +34,9 @@ def top_ten_profit_ave(from_month, from_year, to_month, to_year):
             
                 
 def least_ten_profits(from_month, from_year, to_month, to_year):
-            prodcol_and_profcol = OrdersOnlyData[["Product Name","Profit"]]
-            least_profit = prodcol_and_profcol.sort_values(by= "Profit")
-            Pandas_Format.print_report(least_profit, 10)
+    prodcol_and_profcol = OrdersOnlyData[["Product Name","Profit"]]
+    least_profit = prodcol_and_profcol.sort_values(by= "Profit")
+    Pandas_Format.print_report(least_profit, 10)
 
 
 def least_ten_profits_ave(from_month, from_year, to_month, to_year):
