@@ -12,13 +12,16 @@ import pandas as pd
 xl = pd.ExcelFile("SalesDataFull.xlsx")
 df = xl.parse("Orders")
 
-def formatfunc(*args, **kwargs):
+def print_report(df, rows):
+    with pd.option_context('display.float_format', _formatfunc):
+        print(df.head(rows))
+
+def _formatfunc(*args, **kwargs):
     value = args[0]
     if value >= 0:
         return '${:,.2f}'.format(value)
     else:
         return '-${:,.2f}'.format(abs(value))
 
-with pd.option_context('display.float_format', formatfunc):
-    print(df)
+
 

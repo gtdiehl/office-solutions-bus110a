@@ -8,6 +8,8 @@ Created on Mon Oct 28 14:30:32 2019
 
 import pandas as pd
 from datetime import date
+import Pandas_Format
+
 #import scipy.stats
 #import seaborn as sns
 #import matplotlib.pyplot as plt
@@ -21,7 +23,8 @@ def top_ten_profits(from_month, from_year, to_month, to_year):
             fitered_df = _filter_df_by_date(prodcol_and_profcol, "Order Date", from_month, from_year, to_month, to_year)
             
             most_profit = fitered_df.sort_values(by= "Profit", ascending = False)
-            print(most_profit.head(10))
+            #print(most_profit.head(10))
+            Pandas_Format.print_report(most_profit, 10)
             
                 
 def least_ten_profits():
@@ -36,6 +39,8 @@ def _filter_df_by_date(df, date_column, from_month, from_year, to_month, to_year
         (df[date_column] < pd.Timestamp(date(to_year, to_month + 1, 1)))
         ]
     return filtered_data
+
+print()
                   
 #top_ten_profits()          
 #least_ten_profits()
