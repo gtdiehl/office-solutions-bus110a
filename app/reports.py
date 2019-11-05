@@ -49,9 +49,15 @@ def least_ten_profits_ave(from_month, from_year, to_month, to_year):
 
         
 def _filter_df_by_date(df, date_column, from_month, from_year, to_month, to_year):
+    if to_month == 12:
+        to_month = 1
+        to_year = to_year + 1
+    else:
+        to_month += 1
+
     filtered_data = df[
         (df[date_column] >= pd.Timestamp(date(from_year, from_month, 1))) &
-        (df[date_column] < pd.Timestamp(date(to_year, to_month + 1, 1)))
+        (df[date_column] < pd.Timestamp(date(to_year, to_month, 1)))
         ]
     return filtered_data
 

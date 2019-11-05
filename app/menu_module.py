@@ -130,23 +130,23 @@ class BestMenu:
         if quarter == 1:
             report_range.append(1)
             report_range.append(year)
-            report_range.append(4)
+            report_range.append(3)
             report_range.append(year)
         elif quarter == 2:
             report_range.append(4)
             report_range.append(year)
-            report_range.append(7)
+            report_range.append(6)
             report_range.append(year)
         elif quarter == 3:
             report_range.append(7)
             report_range.append(year)
-            report_range.append(10)
+            report_range.append(9)
             report_range.append(year)
         elif quarter == 4:
             report_range.append(10)
             report_range.append(year)
-            report_range.append(1)
-            report_range.append(year+1)
+            report_range.append(12)
+            report_range.append(year)
         return report_range
 
     def prompt_for_filter_mostprofit(self):
