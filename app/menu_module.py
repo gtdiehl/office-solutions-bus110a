@@ -63,14 +63,27 @@ class BestMenu:
     def _report_submenu_loop(self):
         while True:
             print("\n----------[Report Menu]----------")
+            print()
             print("" +
-                  "[1] Run Most Profitable Product Report\n" +
-                  "[2] Run Least Profitable Product Report\n" +
+                  "[1] Most Profitable Product Report\n" +
+                  "[2] Least Profitable Product Report\n" +
+                  "[3] Most Frequent Buyerst\n" +
+                  "[4] Most Discounted Products\n" +
+                  "[5] "                      "\n" +
+                  "[6] "                      "\n" +
                   "")
             menu_selection = input("Please enter an option [1-2, r to Return to the Main Menu] : ")
             if menu_selection == "1":
-                self.prompt_for_filter_info()
+                self.prompt_for_filter_mostprofit()
             elif menu_selection == "2":
+                self.prompt_for_filter_leastprofit()
+            elif menu_selection == "3":
+                self.prompt_for_filter_info()
+            elif menu_selection == "4":
+                self.prompt_for_filter_info()
+            elif menu_selection == "5":
+                self.prompt_for_filter_info()
+            elif menu_selection == "6":
                 self.prompt_for_filter_info()
             elif menu_selection == "r" or menu_selection == "R":
                 break
@@ -79,7 +92,25 @@ class BestMenu:
             else:
                 print("\nNot a valid choice. Please try again.")
                 
-    def prompt_for_filter_info(self):
+    def prompt_for_filter_mostprofit(self):
+        fromdate_entry = input('Enter a date in YYYY-MM-DD format')
+        year, month, day = map(int, fromdate_entry.split('-'))
+     
+        
+        
+        todate_entry = input('Enter a date in YYYY-MM-DD format')
+        year, month, day = map(int, todate_entry.split('-'))
+       
+       
+       
+        
+        '''
+        Run report function using the above inputs
+        '''
+        reports.top_ten_profits(fromdate_entry, todate_entry)
+        print("Report from period %d/%d to %d/%d" % (fromdate_entry, todate_entry))
+    
+    def prompt_for_filter_leastprofit(self):
         from_month = int(input("What Month?"))
         from_year = int(input("What Year?"))
         to_month = int(input("What Month?"))
@@ -88,5 +119,7 @@ class BestMenu:
         '''
         Run report function using the above inputs
         '''
-        reports.top_ten_profits(from_month, from_year, to_month, to_year)
-        print("Running report for period from %d/%d to %d/%d" % (from_month, from_year, to_month, to_year))
+        reports.least_ten_profits(from_month, from_year, to_month, to_year)
+        print("Report from period %d/%d to %d/%d" % (from_month, from_year, to_month, to_year))
+
+   
