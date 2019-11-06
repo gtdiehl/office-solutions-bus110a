@@ -9,8 +9,11 @@ Created on Wed Oct 30 19:55:16 2019
 
 import pandas as pd
 
-xl = pd.ExcelFile("SalesDataFull.xlsx")
-df = xl.parse("Orders")
+#xl = pd.ExcelFile("SalesDataFull.xlsx")
+#df = xl.parse("Orders")
+
+
+pd.options.display.max_colwidth = 100
 
 def print_report(df, rows):
     with pd.option_context('display.float_format', _formatfunc):
@@ -22,6 +25,4 @@ def _formatfunc(*args, **kwargs):
         return '${:,.2f}'.format(value)
     else:
         return '-${:,.2f}'.format(abs(value))
-
-
 
