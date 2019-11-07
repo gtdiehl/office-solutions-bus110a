@@ -20,7 +20,7 @@ def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort):
                       "Order Date"]].groupby("Product Name").sum()
 
     df1["Average Profit Per Unit"] = df1.loc[:, "Profit"].apply(np.float) / df1.loc[:, "Quantity"].apply(np.float)
-    df1 = df1.sort_values(by="Average Profit Per Unit", ascending=False)
+    df1 = df1.sort_values(by="Average Profit Per Unit", ascending=sort)
     Pandas_Format.print_report(df1, 10)
 
         
