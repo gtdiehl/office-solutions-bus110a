@@ -111,9 +111,9 @@ class BestMenu:
             report_range.append(year)
 
         if report_num == 1:
-            reports.top_ten_profits(report_range[0], report_range[1], report_range[2], report_range[3])
+            reports.profit_of_ten_products_ave(report_range[0], report_range[1], report_range[2], report_range[3], False)
         elif report_num == 2:
-            reports.least_ten_profits(report_range[0], report_range[1], report_range[2], report_range[3])
+            reports.profit_of_ten_products_ave(report_range[0], report_range[1], report_range[2], report_range[3], True)
         elif report_num == 3:
             pass
         elif report_num == 4:
