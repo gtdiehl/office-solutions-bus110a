@@ -8,12 +8,14 @@ Created on Wed Oct 30 19:55:16 2019
 #Fixes currency format into USD & two decimal places
 
 import pandas as pd
+pd.set_option('display.max_columns', None)  
+pd.set_option('display.expand_frame_repr', False)
+pd.set_option('max_colwidth', -1)
 
 #xl = pd.ExcelFile("SalesDataFull.xlsx")
 #df = xl.parse("Orders")
 
 
-pd.options.display.max_colwidth = 100
 
 def print_report(df, rows):
     with pd.option_context('display.float_format', _formatfunc):
