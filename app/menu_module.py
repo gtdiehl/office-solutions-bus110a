@@ -94,26 +94,30 @@ class BestMenu:
 
     def prompt_for_filter(self, report_num):
         report_range = []
-
+        type = ""
         report_type = input("Do you want the report by Quarter or Month? [Q - Quarterly, M - Monthly]: ")
 
         if report_type == 'q' or report_type == 'Q':
             quarter = int(input("Which Quarter? [1 - 4]: "))
             year = int(input("Which Year? [Enter YYYY format]: "))
             report_range = self.quarter_to_months(quarter, year)
+            type = "q"
             
         elif report_type == 'm' or report_type == 'M':
             month = int(input("Which Month? [1 - 12]: "))
             year = int(input("Which Year? [YYYY format]: "))
+            type = "m"
             report_range.append(month)
             report_range.append(year)
             report_range.append(month)
             report_range.append(year)
 
         if report_num == 1:
-            reports.profit_of_ten_products_ave(report_range[0], report_range[1], report_range[2], report_range[3], False)
+            reports.profit_of_ten_products_ave(report_range[0], report_range[1], report_range[2], report_range[3],
+                                               False, type, report_range[0])
         elif report_num == 2:
-            reports.profit_of_ten_products_ave(report_range[0], report_range[1], report_range[2], report_range[3], True)
+            reports.profit_of_ten_products_ave(report_range[0], report_range[1], report_range[2], report_range[3],
+                                               True, type, report_range[0])
         elif report_num == 3:
             pass
         elif report_num == 4:
