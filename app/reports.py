@@ -16,24 +16,26 @@ ordersinfo = OrdersOnlyData[["Order Date", "Product Name", "Quantity", "Profit"]
 
 
 def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, type, num):
-    df1 = ordersinfo[["Product Name", "Quantity", "Profit",
-                      "Order Date"]].groupby("Product Name").sum()
+    fitered_ordersinfo = _filter_df_by_date(ordersinfo, "Order Date", from_month, from_year, to_month, to_year)
+    fitered_ordersinfo_sum = fitered_ordersinfo[["Product Name", "Profit", "Quantity", "Order Date"]].groupby("Product Name").sum()
 
-    df1["Average Profit Per Unit"] = df1.loc[:, "Profit"].apply(np.float) / df1.loc[:, "Quantity"].apply(np.float)
-    df1 = df1.sort_values(by="Average Profit Per Unit", ascending=sort)
+
+    fitered_ordersinfo_sum["Average Profit/Unit"] = fitered_ordersinfo_sum.loc[:, "Profit"].apply(np.float) / \
+                                        fitered_ordersinfo_sum.loc[:, "Quantity"].apply(np.float)
+    fitered_ordersinfo_sum = fitered_ordersinfo_sum.sort_values(by="Average Profit/Unit", ascending=sort)
     if sort and type == 'q':
-        print("\n\n----[Least Profitable Product Report]----[Quarter: " + str(_change_month_to_quarter(num)) +
-              " Year: " + str(from_year) + "]----")
+        print("\n\n\t\t--------[Least Profitable Product Report]--------[Quarter: " +
+              str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------")
     elif sort and type == 'm':
-        print("\n\n----[Least Profitable Product Report]----[Month: " + str(num) + " Year: " +
-              str(from_year) + "]----")
+        print("\n\n\t\t--------[Least Profitable Product Report]--------[Month: " +
+              str(num) + " Year: " + str(from_year) + "]--------")
     elif sort is False and type == 'q':
-        print("\n\n----[Most Profitable Product Report]----[Quarter: " + str(_change_month_to_quarter(num)) +
-              " Year: " + str(from_year) + "]----")
+        print("\n\n\t\t--------[Most Profitable Product Report]--------[Quarter: " +
+              str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------")
     elif sort is False and type == 'm':
-        print("\n\n----[Most Profitable Product Report]----[Month: " + str(num) + " Year: " +
-              str(from_year) + "]----")
-    Pandas_Format.print_report(df1, 10)
+        print("\n\n\t\t--------[Most Profitable Product Report]--------[Month: " +
+              str(num) + " Year: " + str(from_year) + "]--------")
+    Pandas_Format.print_report(fitered_ordersinfo_sum, 10)
 
 
 def _change_month_to_quarter(num):
