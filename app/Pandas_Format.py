@@ -17,7 +17,7 @@ pd.set_option("display.colheader_justify","left")
 
 def print_report(df, rows):
     with pd.option_context('display.float_format', _formatfunc):
-        print(df.head(rows))
+        print(df[:rows].to_string(index=False))
 
 def _formatfunc(*args, **kwargs):
     value = args[0]
