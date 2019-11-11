@@ -24,21 +24,21 @@ def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, d
     fitered_ordersinfo_sum["Average Profit/Unit"] = fitered_ordersinfo_sum.loc[:, "Profit"].apply(np.float) / \
         fitered_ordersinfo_sum.loc[:, "Quantity"].apply(np.float)
     fitered_ordersinfo_sum = fitered_ordersinfo_sum.sort_values(by="Average Profit/Unit", ascending=sort)
-    print("\n\n" + "="*123)
+    print("\n\n" + "="*117)
     if sort and duration == 'q':
-        print("\t\t\t\t\t--------[Least Profitable Product Report]--------[Quarter: " +
+        print("\t\t\t\t--------[Least Profitable Product Report]--------[Quarter: " +
               str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
     elif sort and duration == 'm':
-        print("\t\t\t\t\t--------[Least Profitable Product Report]--------[Month: " +
+        print("\t\t\t\t--------[Least Profitable Product Report]--------[Month: " +
               str(num) + " Year: " + str(from_year) + "]--------\n")
     elif sort is False and duration == 'q':
-        print("\t\t\t\t\t--------[Most Profitable Product Report]--------[Quarter: " +
+        print("\t\t\t\t--------[Most Profitable Product Report]--------[Quarter: " +
               str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
     elif sort is False and duration == 'm':
-        print("\t\t\t\t\t--------[Most Profitable Product Report]--------[Month: " +
+        print("\t\t\t\t--------[Most Profitable Product Report]--------[Month: " +
               str(num) + " Year: " + str(from_year) + "]--------\n")
     Pandas_Format.print_report(fitered_ordersinfo_sum, 10)
-    print("="*123 + "\n")
+    print("="*117 + "\n")
 
 
 def _change_month_to_quarter(num):
