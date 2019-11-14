@@ -12,11 +12,13 @@ import numpy as np
 import Pandas_Format
 import matplotlib.pyplot as plt
 import seaborn as sns
+import locale
 
 SalesDataFull = pd.ExcelFile("SalesDataFull.xlsx")
 OrdersOnlyData = SalesDataFull.parse("Orders")
 ordersinfo = OrdersOnlyData[["Order Date", "Product Name", "Quantity", "Profit"]]
-
+locale.setlocale(locale.LC_ALL, 'English_United States.1252')
+locale._override_localeconv = {'n_sign_posn': 1}
 
 def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, duration, num):
     fitered_ordersinfo = _filter_df_by_date(ordersinfo, "Order Date", from_month, from_year, to_month, to_year)
@@ -49,10 +51,12 @@ def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, d
     chart_df = fitered_ordersinfo_sum[:10]
     plt.figure(figsize=(6,6))
     sns.set_style("whitegrid")
-    ax1 = sns.barplot(x="Product Name", y="Profit", data=chart_df)
+    ax1 = sns.barplot(x="Product Name", y="Average Profit/Unit", data=chart_df)
     ax1.set_xticklabels(labels=chart_df["Product Name"], rotation=90)
     ax1.set_title(title)
-    ax1.set(xlabel="Product Name", ylabel="Profit ($)")
+    #vals = ax1.get_yticks()
+    #ax1.set_yticklabels(['${:,.0f}'.format(x) for x in vals])
+    ax1.set(xlabel="Product Name", ylabel="Average Profit Per Unit ($)")
     plt.show()
 
 
