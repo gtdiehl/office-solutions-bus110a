@@ -11,13 +11,11 @@ from datetime import date
 import numpy as np
 import Pandas_Format
 import matplotlib.pyplot as plt
-import locale
+import seaborn as sns
 
 SalesDataFull = pd.ExcelFile("SalesDataFull.xlsx")
 OrdersOnlyData = SalesDataFull.parse("Orders")
 ordersinfo = OrdersOnlyData[["Order Date", "Product Name", "Quantity", "Profit"]]
-locale.setlocale(locale.LC_ALL, 'English_United States.1252')
-locale._override_localeconv = {'n_sign_posn': 1}
 
 def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, duration, num):
     fitered_ordersinfo = _filter_df_by_date(ordersinfo, "Order Date", from_month, from_year, to_month, to_year)
@@ -93,22 +91,22 @@ def active_customer_report(from_month, from_year, to_month, to_year, sort, durat
 
 def _generate_bar_chart(df, title, xaxis_rotation, xaxis_df_name, xaxis_label, yaxis_df_name, yaxis_label):
 
+    sns.set(style="whitegrid")
     fig, ax = plt.subplots(figsize=(15, 6))
     ax.set_title(title)
 
-    df.plot.bar(ax=ax, x=xaxis_df_name, y=yaxis_df_name)
+    sns.barplot(ax=ax, x=xaxis_df_name, y=yaxis_df_name, data=df)
 
     ax.set_xticklabels(labels=df[xaxis_df_name], rotation=xaxis_rotation)
     ax.set(xlabel=xaxis_label, ylabel=yaxis_label)
     vals = ax.get_yticks()
     ax.set_yticklabels(['${:,.0f}'.format(x).replace('$-', '-$') for x in vals])
-    ax.get_legend().remove()
     
     plt.show()
 
 def _generate_bar_chart_with_line_twinx(df, title, xaxis_rotation, xaxis_df_name, xaxis_label, yaxis1_df_name,
                                         yaxis2_df_name, yaxis1_label, yaxis2_label):
-
+    sns.set(style="whitegrid")
     fig, ax = plt.subplots(figsize=(15, 6))
     
     # define the number of ticks
@@ -119,17 +117,15 @@ def _generate_bar_chart_with_line_twinx(df, title, xaxis_rotation, xaxis_df_name
     ax.set_title(title)
     ax2 = ax.twinx()
 
-    df.plot.bar(ax=ax, x=xaxis_df_name, y=yaxis1_df_name)
-    df.plot.line(ax=ax2, x=xaxis_df_name, y=yaxis2_df_name, style='ro')
+    sns.barplot(ax=ax, x=xaxis_df_name, y=yaxis1_df_name, data=df)
+    sns.scatterplot(ax=ax2, x=xaxis_df_name, y=yaxis2_df_name, data=df)
 
     ax.set_xticklabels(labels=df[xaxis_df_name], rotation=xaxis_rotation)
     ax.set(xlabel=xaxis_label, ylabel=yaxis1_label)
     vals = ax.get_yticks()
     ax.set_yticklabels(['${:,.0f}'.format(x).replace('$-', '-$') for x in vals])
-    ax.get_legend().remove()
     
     ax2.set(ylabel=yaxis2_label)
-    ax2.get_legend().remove()
     
     ax2.set_yticks(np.linspace(ax2.get_yticks()[0], ax2.get_yticks()[-1], len(ax.get_yticks())))
     ax2.yaxis.set_major_locator(plt.LinearLocator(numticks=NUM_TICKS))
