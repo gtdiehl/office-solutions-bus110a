@@ -54,9 +54,9 @@ def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, d
     ax1 = sns.barplot(x="Product Name", y="Average Profit/Unit", data=chart_df)
     ax1.set_xticklabels(labels=chart_df["Product Name"], rotation=90)
     ax1.set_title(title)
-    #vals = ax1.get_yticks()
-    #ax1.set_yticklabels(['${:,.0f}'.format(x) for x in vals])
-    ax1.set(xlabel="Product Name", ylabel="Average Profit Per Unit ($)")
+    vals = ax1.get_yticks()
+    ax1.set_yticklabels(['${:,.0f}'.format(x).replace('$-','-$') for x in vals])
+    ax1.set(xlabel="Product Name", ylabel="Average Profit Per Unit")
     plt.show()
 
 
