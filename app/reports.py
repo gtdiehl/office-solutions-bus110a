@@ -10,6 +10,9 @@ import pandas as pd
 from datetime import date
 import numpy as np
 import Pandas_Format
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 SalesDataFull = pd.ExcelFile("SalesDataFull.xlsx")
 OrdersOnlyData = SalesDataFull.parse("Orders")
 ordersinfo = OrdersOnlyData[["Order Date", "Product Name", "Quantity", "Profit"]]
@@ -39,6 +42,13 @@ def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, d
               str(num) + " Year: " + str(from_year) + "]--------\n")
     Pandas_Format.print_report(fitered_ordersinfo_sum, 10)
     print("="*117 + "\n")
+    chart_df = fitered_ordersinfo_sum[:10]
+    plt.figure(figsize=(6,6))
+    sns.set_style("whitegrid")
+    ax1 = sns.barplot(x="Product Name", y="Profit", data=chart_df)
+    ax1.set_xticklabels(labels=chart_df["Product Name"], rotation=30)
+    ax1.set_title("Profit Profitable Report")
+    plt.show()
 
 
 def active_customer_report(from_month, from_year, to_month, to_year, sort, duration, num):
