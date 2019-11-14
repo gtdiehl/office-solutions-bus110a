@@ -103,9 +103,10 @@ class BestMenu:
         report_range = []
         type = ""
         
-        report_type = input("Do you want the report by Quarter or Month? [Q - Quarterly, M - Monthly]: ")
+       
 
         while True:
+            report_type = input("Do you want the report by Quarter or Month? [Q - Quarterly, M - Monthly]: ")
             if report_type == 'q' or report_type == 'Q':
 
                 while True:
