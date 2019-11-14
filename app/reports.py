@@ -11,7 +11,6 @@ from datetime import date
 import numpy as np
 import Pandas_Format
 import matplotlib.pyplot as plt
-import seaborn as sns
 import locale
 
 SalesDataFull = pd.ExcelFile("SalesDataFull.xlsx")
@@ -31,33 +30,26 @@ def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, d
     fitered_ordersinfo_sum = fitered_ordersinfo_sum.sort_values(by="Average Profit/Unit", ascending=sort)
     print("\n\n" + "="*117)
     if sort and duration == 'q':
-        title = "Least Profitable Report - Quarter: " + str(_change_month_to_quarter(num)) + " Year: " + str(from_year)
+        title = "Least Profitable Product Report - Quarter: " + str(_change_month_to_quarter(num)) + " Year: " + str(from_year)
         print("\t\t\t\t--------[Least Profitable Product Report]--------[Quarter: " +
               str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
     elif sort and duration == 'm':
-        title = "Least Profitable Report - Month: " + str(num) + " Year: " + str(from_year)
+        title = "Least Profitable Product Report - Month: " + str(num) + " Year: " + str(from_year)
         print("\t\t\t\t--------[Least Profitable Product Report]--------[Month: " +
               str(num) + " Year: " + str(from_year) + "]--------\n")
     elif sort is False and duration == 'q':
-        title = "Most Profitable Report - Quarter: " + str(_change_month_to_quarter(num)) + " Year: " + str(from_year)
+        title = "Most Profitable Product Report - Quarter: " + str(_change_month_to_quarter(num)) + " Year: " + str(from_year)
         print("\t\t\t\t--------[Most Profitable Product Report]--------[Quarter: " +
               str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
     elif sort is False and duration == 'm':
-        title = "Most Profitable Report - Month: " + str(num) + " Year: " + str(from_year)
+        title = "Most Profitable Product Report - Month: " + str(num) + " Year: " + str(from_year)
         print("\t\t\t\t--------[Most Profitable Product Report]--------[Month: " +
               str(num) + " Year: " + str(from_year) + "]--------\n")
     Pandas_Format.print_report(fitered_ordersinfo_sum, 10)
     print("="*117 + "\n")
     chart_df = fitered_ordersinfo_sum[:10]
-    plt.figure(figsize=(6,6))
-    sns.set_style("whitegrid")
-    ax1 = sns.barplot(x="Product Name", y="Average Profit/Unit", data=chart_df)
-    ax1.set_xticklabels(labels=chart_df["Product Name"], rotation=90)
-    ax1.set_title(title)
-    vals = ax1.get_yticks()
-    ax1.set_yticklabels(['${:,.0f}'.format(x).replace('$-','-$') for x in vals])
-    ax1.set(xlabel="Product Name", ylabel="Average Profit Per Unit")
-    plt.show()
+    _generate_bar_chart(chart_df, title, 90, "Product Name", "Product Name", "Average Profit/Unit",
+                        "Average Profit/Unit")
 
 
 def active_customer_report(from_month, from_year, to_month, to_year, sort, duration, num):
@@ -77,20 +69,76 @@ def active_customer_report(from_month, from_year, to_month, to_year, sort, durat
     filtered_customers_sum = filtered_customers_sum.sort_values(by="Profit", ascending=sort)
     print("\n\n" + "="*117)
     if sort and duration == 'q':
-        print("\t\t\t\t--------[Most Profitable Customer Report]--------[Quarter: " +
+        title = "Least Profitable Customer Report - Quarter: " + str(_change_month_to_quarter(num)) + " Year: " + str(from_year)
+        print("\t\t\t\t--------[Least Profitable Customer Report]--------[Quarter: " +
               str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
     elif sort and duration == 'm':
+        title = "Least Profitable Customer Report - Month: " + str(num) + " Year: " + str(from_year)
         print("\t\t\t\t--------[Least Profitable Customer Report]--------[Month: " +
               str(num) + " Year: " + str(from_year) + "]--------\n")
     elif sort is False and duration == 'q':
+        title = "Most Profitable Customer Report - Quarter: " + str(_change_month_to_quarter(num)) + " Year: " + str(from_year)
         print("\t\t\t\t--------[Most Profitable Customer Report]--------[Quarter: " +
               str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
     elif sort is False and duration == 'm':
+        title = "Most Profitable Customer Report - Month: " + str(num) + " Year: " + str(from_year)
         print("\t\t\t\t--------[Least Profitable Customer Report]--------[Month: " +
               str(num) + " Year: " + str(from_year) + "]--------\n")
     Pandas_Format.print_report(filtered_customers_sum, 10)
     print("=" * 117 + "\n")
+    chart_df = filtered_customers_sum[:10]
+    _generate_bar_chart_with_line_twinx(chart_df, title, 0, "Customer Name", "Customer Name", "Profit",
+                                        "Total Num of Orders", "Profit", "Total Num of Orders")
 
+
+def _generate_bar_chart(df, title, xaxis_rotation, xaxis_df_name, xaxis_label, yaxis_df_name, yaxis_label):
+
+    fig, ax = plt.subplots(figsize=(15, 6))
+    ax.set_title(title)
+
+    df.plot.bar(ax=ax, x=xaxis_df_name, y=yaxis_df_name)
+
+    ax.set_xticklabels(labels=df[xaxis_df_name], rotation=xaxis_rotation)
+    ax.set(xlabel=xaxis_label, ylabel=yaxis_label)
+    vals = ax.get_yticks()
+    ax.set_yticklabels(['${:,.0f}'.format(x).replace('$-', '-$') for x in vals])
+    ax.get_legend().remove()
+    
+    plt.show()
+
+def _generate_bar_chart_with_line_twinx(df, title, xaxis_rotation, xaxis_df_name, xaxis_label, yaxis1_df_name,
+                                        yaxis2_df_name, yaxis1_label, yaxis2_label):
+
+    fig, ax = plt.subplots(figsize=(15, 6))
+    
+    # define the number of ticks
+    NUM_TICKS=11
+    
+    ax.yaxis.set_major_locator(plt.LinearLocator(numticks=NUM_TICKS))
+    
+    ax.set_title(title)
+    ax2 = ax.twinx()
+
+    df.plot.bar(ax=ax, x=xaxis_df_name, y=yaxis1_df_name)
+    df.plot.line(ax=ax2, x=xaxis_df_name, y=yaxis2_df_name, style='ro')
+
+    ax.set_xticklabels(labels=df[xaxis_df_name], rotation=xaxis_rotation)
+    ax.set(xlabel=xaxis_label, ylabel=yaxis1_label)
+    vals = ax.get_yticks()
+    ax.set_yticklabels(['${:,.0f}'.format(x).replace('$-', '-$') for x in vals])
+    ax.get_legend().remove()
+    
+    ax2.set(ylabel=yaxis2_label)
+    ax2.get_legend().remove()
+    
+    ax2.set_yticks(np.linspace(ax2.get_yticks()[0], ax2.get_yticks()[-1], len(ax.get_yticks())))
+    ax2.yaxis.set_major_locator(plt.LinearLocator(numticks=NUM_TICKS))
+    
+    i = 0
+    for line in df.index.values.tolist():
+        ax2.text(i+0.1, df[yaxis2_df_name][line], df[yaxis2_df_name][line], horizontalalignment='left', size='medium', color='black', weight='bold')
+        i = i +1
+    plt.show()
 
 def _change_month_to_quarter(num):
     if 1 <= num <= 3:
