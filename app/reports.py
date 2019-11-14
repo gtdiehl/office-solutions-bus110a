@@ -46,7 +46,7 @@ def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, d
     plt.figure(figsize=(6,6))
     sns.set_style("whitegrid")
     ax1 = sns.barplot(x="Product Name", y="Profit", data=chart_df)
-    ax1.set_xticklabels(labels=chart_df["Product Name"], rotation=30)
+    ax1.set_xticklabels(labels=chart_df["Product Name"], rotation=90)
     ax1.set_title("Profit Profitable Report")
     plt.show()
 
