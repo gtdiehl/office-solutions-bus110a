@@ -41,6 +41,38 @@ def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, d
     print("="*117 + "\n")
 
 
+def active_customer_report(from_month, from_year, to_month, to_year, sort, duration, num):
+    customers = OrdersOnlyData[["Order Date", "Customer Name", "Profit"]]
+    filtered_customers = _filter_df_by_date(customers, "Order Date", from_month, from_year, to_month, to_year)
+
+    unique_customer_list = filtered_customers["Customer Name"].unique()
+    num_of_orders_dic = {}
+    for cust in unique_customer_list:
+        customer_select = filtered_customers.loc[filtered_customers["Customer Name"] == cust]
+        my_len = customer_select["Customer Name"].count()
+        num_of_orders_dic[cust] = my_len
+
+    filtered_customers_sum = filtered_customers.groupby(["Customer Name"]).sum()
+    filtered_customers_sum = filtered_customers_sum.reset_index()
+    filtered_customers_sum['Total Num of Orders'] = filtered_customers_sum['Customer Name'].map(num_of_orders_dic)
+    filtered_customers_sum = filtered_customers_sum.sort_values(by="Profit", ascending=sort)
+    print("\n\n" + "="*117)
+    if sort and duration == 'q':
+        print("\t\t\t\t--------[Most Profitable Customer Report]--------[Quarter: " +
+              str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
+    elif sort and duration == 'm':
+        print("\t\t\t\t--------[Least Profitable Customer Report]--------[Month: " +
+              str(num) + " Year: " + str(from_year) + "]--------\n")
+    elif sort is False and duration == 'q':
+        print("\t\t\t\t--------[Most Profitable Customer Report]--------[Quarter: " +
+              str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
+    elif sort is False and duration == 'm':
+        print("\t\t\t\t--------[Least Profitable Customer Report]--------[Month: " +
+              str(num) + " Year: " + str(from_year) + "]--------\n")
+    Pandas_Format.print_report(filtered_customers_sum, 10)
+    print("=" * 117 + "\n")
+
+
 def _change_month_to_quarter(num):
     if 1 <= num <= 3:
         return 1
@@ -64,8 +96,3 @@ def _filter_df_by_date(df, date_column, from_month, from_year, to_month, to_year
         (df[date_column] < pd.Timestamp(date(to_year, to_month, 1)))
         ]
     return filtered_data
-
-
-
-
-
