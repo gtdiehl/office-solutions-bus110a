@@ -29,15 +29,19 @@ def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, d
     fitered_ordersinfo_sum = fitered_ordersinfo_sum.sort_values(by="Average Profit/Unit", ascending=sort)
     print("\n\n" + "="*117)
     if sort and duration == 'q':
+        title = "Least Profitable Report - Quarter: " + str(_change_month_to_quarter(num)) + " Year: " + str(from_year)
         print("\t\t\t\t--------[Least Profitable Product Report]--------[Quarter: " +
               str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
     elif sort and duration == 'm':
+        title = "Least Profitable Report - Month: " + str(num) + " Year: " + str(from_year)
         print("\t\t\t\t--------[Least Profitable Product Report]--------[Month: " +
               str(num) + " Year: " + str(from_year) + "]--------\n")
     elif sort is False and duration == 'q':
+        title = "Most Profitable Report - Quarter: " + str(_change_month_to_quarter(num)) + " Year: " + str(from_year)
         print("\t\t\t\t--------[Most Profitable Product Report]--------[Quarter: " +
               str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
     elif sort is False and duration == 'm':
+        title = "Most Profitable Report - Month: " + str(num) + " Year: " + str(from_year)
         print("\t\t\t\t--------[Most Profitable Product Report]--------[Month: " +
               str(num) + " Year: " + str(from_year) + "]--------\n")
     Pandas_Format.print_report(fitered_ordersinfo_sum, 10)
@@ -47,7 +51,7 @@ def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, d
     sns.set_style("whitegrid")
     ax1 = sns.barplot(x="Product Name", y="Profit", data=chart_df)
     ax1.set_xticklabels(labels=chart_df["Product Name"], rotation=90)
-    ax1.set_title("Profit Profitable Report")
+    ax1.set_title(title)
     ax1.set(xlabel="Product Name", ylabel="Profit ($)")
     plt.show()
 
