@@ -118,7 +118,7 @@ def chart_example_four():
         i = i + 1
     plt.show()
 
-#chart_example_one()
-#chart_example_two()
-#chart_example_three()
+chart_example_one()
+chart_example_two()
+chart_example_three()
 chart_example_four()
