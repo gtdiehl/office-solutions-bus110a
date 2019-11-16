@@ -75,7 +75,7 @@ class Database:
         # Returns the result object.
         return results
 
-    def _commit_statement(self, commit_statement):
+    def _commit_statement(self, *args, **kwargs):
         """
         Helper method to run statements against the SQLite3 database that require a commit.
         This method is used to reduce redundant code.
@@ -88,7 +88,7 @@ class Database:
             # Cursor object is required to insert data from the database.
             cur = self.db_conn.cursor()
             # Executes the SQL statement against the database.
-            cur.execute(commit_statement)
+            cur.execute(*args, **kwargs)
             # Commits the data to the database.  It is now saved.
             self.db_conn.commit()
             total_changes = self.db_conn.total_changes
@@ -123,12 +123,13 @@ class Database:
         """
         return self._query_statement(*args, **kwargs)
 
-    def insert_user_db(self, insert_statement):
+    def insert_user_db(self, *args, **kwargs):
         """
         Inserts data into the Employee database
 
         Args:
-            insert_statement (str): String should conform the the standard SQL format
+            args
+            kwargs
 
         Raises:
             sqlite3.Error: Catch all for all SQLite3 exception types
@@ -136,14 +137,15 @@ class Database:
         Returns:
             bool: The return value.  True for success, False otherwise.
         """
-        return self._commit_statement(insert_statement)
+        return self._commit_statement(*args, **kwargs)
 
-    def delete_user_db(self, delete_statement):
+    def delete_user_db(self, *args, **kwargs):
         """
         Deletes data from the Employee database
 
         Args:
-            delete_statement (str): String should conform the the standard SQL format
+            args
+            kwargs
 
         Raises:
             sqlite3.Error: Catch all for all SQLite3 exception types
@@ -151,4 +153,4 @@ class Database:
         Returns:
             bool: The return value.  True for success, False otherwise.
         """
-        return self._commit_statement(delete_statement)
+        return self._commit_statement(*args, **kwargs)
