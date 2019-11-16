@@ -19,9 +19,8 @@ class login:
             email = input("Please enter email: ")
             password = input("Please enter password: ")
 
-            results = self.myDB.query_user_db("SELECT EXISTS(SELECT * FROM Employee WHERE Email is \'" +
-                                   email + "\' AND Password is \'" +
-                                   password + "\')")
+            results = self.myDB.query_user_db("SELECT EXISTS(SELECT * FROM Employee WHERE Email is ? AND "
+                                              "Password is ?)", (email, password))
 
             if results == [1]:
                 print("\nLogin Successful")

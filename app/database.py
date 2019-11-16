@@ -50,7 +50,7 @@ class Database:
         # Closes the database connection.
         self.db_conn.close()
 
-    def _query_statement(self, query_statement):
+    def _query_statement(self, *args, **kwargs):
         """
         Helper method to query the SQLite3 database.
         This method is used to reduce redundant code.
@@ -64,7 +64,7 @@ class Database:
             # Cursor object is required to fetch data from the database.
             cur = self.db_conn.cursor()
             # Executes the SQL statement against the database.
-            cur.execute(query_statement)
+            cur.execute(*args, **kwargs)
             # All records are returned from the database to the results object.
             results = cur.fetchall()
             # Disconnects from the database.
@@ -104,7 +104,7 @@ class Database:
         else:
             return False
 
-    def query_user_db(self, query_statement):
+    def query_user_db(self, *args, **kwargs):
         """
         Queries the Employee database.
         Will only return the first column from the SQL Select statement.
@@ -112,7 +112,8 @@ class Database:
         TODO: Make the method return all columns OR create a different method to return all columns.
 
         Args:
-            query_statement (str): String should conform the the standard SQL format
+            args
+            kwargs
 
         Raises:
             sqlite3.Error: Catch all for all SQLite3 exception types
@@ -120,7 +121,7 @@ class Database:
         Returns:
             results: List type object with the database result set
         """
-        return self._query_statement(query_statement)
+        return self._query_statement(*args, **kwargs)
 
     def insert_user_db(self, insert_statement):
         """
