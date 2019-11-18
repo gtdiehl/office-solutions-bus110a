@@ -76,7 +76,7 @@ class BestMenu:
                   "[2] Least Profitable Product Report\n" +
                   "[3] Most Profitable Customer Report\n" +
                   "[4] Least Profitable Customer Report\n" +
-                  "[5] Most Discounted Products\n" +
+                  "[5] Profit Analysis Reports menu\n" +
                   "[6] "                      "\n" +
                   "")
             menu_selection = input("Please enter an option [1-2, r to Return to the Main Menu] : ")
@@ -89,7 +89,7 @@ class BestMenu:
             elif menu_selection == "4":
                 self.prompt_for_filter(4)
             elif menu_selection == "5":
-                self.prompt_for_filter(5)
+                self._report_analysis_submenu()
             elif menu_selection == "6":
                 self.prompt_for_filter(6)
             elif menu_selection == "r" or menu_selection == "R":
@@ -98,6 +98,9 @@ class BestMenu:
                 print("\nNot a valid choice. Please try again.")
             else:
                 print("\nNot a valid choice. Please try again.")
+
+	def _report_analysis_submenu():
+		pass
 
     def prompt_for_filter(self, report_num):
         report_range = []
