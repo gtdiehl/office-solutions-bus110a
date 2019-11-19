@@ -107,7 +107,7 @@ def _generate_bar_chart(df, title, xaxis_rotation, xaxis_df_name, xaxis_label, y
 def _generate_bar_chart_with_line_twinx(df, title, xaxis_rotation, xaxis_df_name, xaxis_label, yaxis1_df_name,
                                         yaxis2_df_name, yaxis1_label, yaxis2_label):
     sns.set(style="whitegrid")
-    fig, ax = plt.subplots(figsize=(15, 6))
+    fig, ax = plt.subplots(figsize=(19, 6))
     
     # define the number of ticks
     NUM_TICKS=11
