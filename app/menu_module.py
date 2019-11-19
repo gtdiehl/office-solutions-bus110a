@@ -69,29 +69,27 @@ class BestMenu:
 
     def _report_submenu_loop(self):
         while True:
-            print("\n----------[Report Menu]----------")
+            print("\n------------[Report Menu]------------")
             print()
             print("" +
                   "[1] Most Profitable Product Report\n" +
                   "[2] Least Profitable Product Report\n" +
                   "[3] Most Profitable Customer Report\n" +
-                  "[4] Least Profitable Customer Report\n" +
+                  "[4] Least Profitable Customer Report\n\n" +
+                  "==========[Report Sub-Menus]==========\n"
                   "[5] Profit Analysis Reports menu\n" +
-                  "[6] "                      "\n" +
                   "")
-            menu_selection = input("Please enter an option [1-2, r to Return to the Main Menu] : ")
+            menu_selection = input("Please enter an option [1-5, r to Return to the Main Menu] : ")
             if menu_selection == "1":
-                self.prompt_for_filter(1)
+                self.prompt_for_report_filter(1)
             elif menu_selection == "2":
-                self.prompt_for_filter(2)
+                self.prompt_for_report_filter(2)
             elif menu_selection == "3":
-                self.prompt_for_filter(3)
+                self.prompt_for_report_filter(3)
             elif menu_selection == "4":
-                self.prompt_for_filter(4)
+                self.prompt_for_report_filter(4)
             elif menu_selection == "5":
                 self._report_analysis_submenu()
-            elif menu_selection == "6":
-                self.prompt_for_filter(6)
             elif menu_selection == "r" or menu_selection == "R":
                 break
             elif menu_selection == "":
@@ -99,10 +97,39 @@ class BestMenu:
             else:
                 print("\nNot a valid choice. Please try again.")
 
-	def _report_analysis_submenu():
-		pass
+    def _report_analysis_submenu(self):
+        while True:
+            print("\n------------[Report Menu]------------")
+            print()
+            print("" +
+                  "[1] Analysis Report 1\n" +
+                  "[2] Analysis Report 2\n" +
+                  "[3] Analysis Report 3\n" +
+                  "[4] Analysis Report 4\n" +
+                  "[5] Analysis Report 5\n" +
+                  "[5] Analysis Report 6\n" +
+                  "")
+            menu_selection = input("Please enter an option [1-6, r to Return to the Main Menu] : ")
+            if menu_selection == "1":
+                self.prompt_for_analysis_filter(1)
+            elif menu_selection == "2":
+                self.prompt_for_analysis_filter(2)
+            elif menu_selection == "3":
+                self.prompt_for_analysis_filter(3)
+            elif menu_selection == "4":
+                self.prompt_for_analysis_filter(4)
+            elif menu_selection == "5":
+                self.prompt_for_analysis_filter(5)
+            elif menu_selection == "6":
+                self.prompt_for_analysis_filter(6)                
+            elif menu_selection == "r" or menu_selection == "R":
+                break
+            elif menu_selection == "":
+                print("\nNot a valid choice. Please try again.")
+            else:
+                print("\nNot a valid choice. Please try again.")
 
-    def prompt_for_filter(self, report_num):
+    def prompt_for_report_filter(self, report_num):
         report_range = []
         type = ""
         
@@ -181,6 +208,22 @@ class BestMenu:
             reports.active_customer_report(report_range[0], report_range[1], report_range[2], report_range[3], False, type, report_range[0])
         elif report_num == 4:
             reports.active_customer_report(report_range[0], report_range[1], report_range[2], report_range[3], True, type, report_range[0])
+        elif report_num == 5:
+            pass
+        elif report_num == 6:
+            pass
+        else:
+            print("[ERROR] Report does not exist!")
+            
+    def prompt_for_analysis_filter(self, report_num):
+        if report_num == 1:
+            pass
+        elif report_num == 2:
+            pass            
+        elif report_num == 3:
+            pass
+        elif report_num == 4:
+            pass
         elif report_num == 5:
             pass
         elif report_num == 6:
