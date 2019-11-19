@@ -102,9 +102,9 @@ class BestMenu:
             print("\n------------[Report Menu]------------")
             print()
             print("" +
-                  "[1] Analysis Report 1\n" +
-                  "[2] Analysis Report 2\n" +
-                  "[3] Analysis Report 3\n" +
+                  "[1] Sales and Profits by Region\n" +
+                  "[2] Discounts Given out by Region\n" +
+                  "[3] Discounts by Category and Region\n" +
                   "[4] Analysis Report 4\n" +
                   "[5] Analysis Report 5\n" +
                   "[5] Analysis Report 6\n" +
@@ -216,12 +216,110 @@ class BestMenu:
             print("[ERROR] Report does not exist!")
             
     def prompt_for_analysis_filter(self, report_num):
+        report_range = []
+        type = ""
+        
+       
+
+        while True:
+            if not report_num == 1:
+                report_type = input("Do you want the report by Quarter or Month? [Q - Quarterly, M - Monthly]: ")
+            else:
+                report_type = input("Do you want the report by Year, Quarter, or Month? [Y - Year, Q - Quarterly, M - Monthly]: ")
+            
+            if report_type == 'q' or report_type == 'Q':
+
+                while True:
+                    quarter = int(input("Which Quarter? [1 - 4]: "))
+                    if 1 <= quarter <= 4:
+                        break
+                    else:
+                        print("\nNot a valid choice. Please try again.")
+                        continue
+
+                while True:
+                    year = int(input("Which Year? [YYYY format]: "))
+                    if year is None:
+                        print("Year cannot be blank")
+                        continue
+                    else:
+                        while True:
+                            if not self._verifyYear(year):
+                                print("Invalid year. Please enter a valid year in the format of YYYY.")
+                                year = int(input("Which Year? [YYYY format]: "))
+                                continue
+                            else:
+                                type = 'q'
+                                report_range = self.quarter_to_months(quarter, year)
+                                break
+                        break
+
+                break
+
+            elif report_type == 'm' or report_type == 'M':
+                while True:
+                    month = int(input("Which Month? [1 - 12]: "))
+                    if 1 <= month <= 12:
+                        break
+                    else:
+                        print("\nNot a valid choice. Please try again.")
+                        continue
+
+                while True:
+                    year = int(input("Which Year? [YYYY format]: "))
+                    if year is None:
+                        print("Year cannot be blank")
+                        continue
+                    else:
+                        while True:
+                            if not self._verifyYear(year):
+                                print("Invalid year. Please enter a valid year in the format of YYYY.")
+                                year = int(input("Which Year? [YYYY format]: "))
+                                continue
+                            else:
+                                type = 'm'
+                                report_range.append(month)
+                                report_range.append(year)
+                                report_range.append(month)
+                                report_range.append(year)
+                                break
+                        break
+
+                break
+            elif report_type == 'y' or report_type == 'Y':
+                while True:
+                    year = int(input("Which Year? [YYYY format]: "))
+                    if year is None:
+                        print("Year cannot be blank")
+                        continue
+                    else:
+                        while True:
+                            if not self._verifyYear(year):
+                                print("Invalid year. Please enter a valid year in the format of YYYY.")
+                                year = int(input("Which Year? [YYYY format]: "))
+                                continue
+                            else:
+                                type = 'y'
+                                report_range.append(1)
+                                report_range.append(year)
+                                report_range.append(12)
+                                report_range.append(year)
+                                break
+                        break
+                break
+            else:
+                print("\nNot a valid choice. Please try again.")
+        
+        
         if report_num == 1:
-            pass
+            if report_type == 'y' or report_type == 'Y':
+                reports.chart_example_four(year)
+            else:
+                reports.chart_example_three(report_range[0], report_range[1], report_range[2], report_range[3], type, report_range[0])
         elif report_num == 2:
-            pass            
+            reports.chart_example_one(report_range[0], report_range[1], report_range[2], report_range[3], type, report_range[0])
         elif report_num == 3:
-            pass
+            reports.chart_example_five(report_range[0], report_range[1], report_range[2], report_range[3], type, report_range[0])
         elif report_num == 4:
             pass
         elif report_num == 5:
