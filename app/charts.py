@@ -2,6 +2,27 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import date
 
+def topcust_no_disc():
+    xl = pd.ExcelFile("SalesDataFull.xlsx")
+    df = xl.parse("Orders")
+    df = _filter_df_by_date(df, "Order Date", 1, 2015, 1, 2015)
+    
+    df2 = df[df.Discount == 0]
+    df3 = df2.sort_values(by='Profit', ascending= False)
+    df3 = df3.head(15)
+    print(df3)
+    #Defining 2 plot axis and size of graph
+    fig = plt.figure(figsize=(20,5))
+    #1x2 Grid
+    ax1 = fig.add_subplot(1,2,1)
+    
+    df3 = df3.rename(columns={"Customer Name":"Customer_Name"})
+    
+    ax1.bar(df3['Customer_Name'], df3['Profit'])
+    ax1.set_xticklabels(df3['Customer_Name'], rotation=60, horizontalalignment='right')
+    ax1.set_title("Top 10 Customers Profits Without Discounts")
+    ax1.set_ylabel("Profit")
+ 
 def _filter_df_by_date(df, date_column, from_month, from_year, to_month, to_year):
     filtered_data = df[
         (df[date_column] >= pd.Timestamp(date(from_year, from_month, 1))) &
@@ -206,8 +227,9 @@ def chart_example_five():
 #chart_example_three()
 #chart_example_four()
 #chart_example_five()
-    
-chart_example_four()
-chart_example_three()
-chart_example_one()
-chart_example_five()
+#    
+#chart_example_four()
+#chart_example_three()
+#chart_example_one()
+#chart_example_five()
+topcust_no_disc()
