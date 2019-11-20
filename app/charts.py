@@ -9,7 +9,11 @@ def topcust_no_disc():
     
     df2 = df[df.Discount == 0]
     df3 = df2.sort_values(by='Profit', ascending= False)
-    df3 = df3.head(15)
+    df3 = df3[["Customer Name", "Profit"]]
+    df3 = df3.groupby(["Customer Name"]).count()
+    df3.reset_index()
+    df3 = df3.sort_values(by="Profit", ascending=False)
+    df3 = df3[:10]
     print(df3)
     #Defining 2 plot axis and size of graph
     fig = plt.figure(figsize=(20,5))
