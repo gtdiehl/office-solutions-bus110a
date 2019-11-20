@@ -23,6 +23,34 @@ def topcust_no_disc():
     ax1.set_ylabel("Profit")
     vals = ax1.get_yticks()
     ax1.set_yticklabels(['${:.0f}'.format(x) for x in vals])
+
+def topcust_high_disc():
+    xl = pd.ExcelFile("SalesDataFull.xlsx")
+    df = xl.parse("Orders")
+    df = _filter_df_by_date(df, "Order Date", 3, 2017, 11, 2017)
+
+    fig = plt.figure(figsize=(20,5))
+    ax1 = fig.add_subplot(1,2,1)
+
+    df2 = df[df.Discount > 0]
+    df3 = df2.sort_values(by='Profit', ascending=True)
+    df3 = df3[["Customer Name", "Profit", "Discount"]]
+    df3 = df3.groupby(['Customer Name', 'Discount']).sum().sort_values(by='Profit', ascending=True)
+    df3 = df3[:10]
+    print(df3)
+        
+    df3 = df3.reset_index().pivot('Customer Name', 'Discount', 'Profit')
+    df3.plot(kind='bar', stacked=True, ax=ax1)
+    ax1.set_title("Bottom 10 Customer Profits With Discounts")
+    vals = ax1.get_yticks()
+    ax1.set_yticklabels(['${:,.0f}'.format(x) for x in vals])
+    current_handles, _ = plt.gca().get_legend_handles_labels()
+    reversed_handles = reversed(current_handles)
+    labels = sorted(df['Discount'].unique(), reverse=True)
+    for a in range(0, len(labels)):
+        labels[a] = '{:.0f}%'.format(float(labels[a]) * 100)
+    plt.legend(reversed_handles,labels,loc='lower right', title="Discount")
+    plt.show()
  
 def _filter_df_by_date(df, date_column, from_month, from_year, to_month, to_year):
     filtered_data = df[
@@ -233,4 +261,5 @@ def chart_example_five():
 #chart_example_three()
 #chart_example_one()
 #chart_example_five()
-topcust_no_disc()
+#topcust_no_disc()
+topcust_high_disc()
