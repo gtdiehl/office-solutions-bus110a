@@ -313,6 +313,87 @@ def discounts_by_category_and_region(from_month, from_year, to_month, to_year,
                      f"Region - Quarter: {_change_month_to_quarter(num)} Year: {from_year}")
     plt.subplots_adjust(wspace=0.2, hspace=0.6)
     plt.show()
+    
+def topcust_no_disc(from_month, from_year, to_month, to_year, duration, num):
+
+    df = df = OrdersOnlyData
+    df = _filter_df_by_date(df, "Order Date", from_month, from_year, to_month,
+                            to_year)
+    
+    df2 = df[df.Discount == 0]
+    df3 = df2.sort_values(by='Profit', ascending= False)
+    df3 = df3[["Customer Name", "Profit"]]
+    df3 = df3.groupby(["Customer Name"]).sum()
+    df3 = df3.sort_values(by="Profit", ascending=False)
+
+    fig, ax1 = plt.subplots(figsize=(17,5))
+    
+    df3 = df3[:10]
+    
+    if duration == 'm' or duration == 'M':
+        print("="*117 + "\n")
+        title = (f"Top 10 Customers Profits Without Discounts - Month: {from_month}"
+                 f" Year: {from_year}")
+        print(f"\t\t--------[Top 10 Customers Profits Without Discounts]"
+              f"--------[Month: {from_month} Year: {from_year}]--------\n")
+        Pandas_Format.print_report(df3.reset_index(), 10)
+        print("="*117 + "\n")
+        df3.plot(kind='bar', ax=ax1)
+        ax1.set(title=title, ylabel="Profit")
+    else:
+        print("="*117 + "\n")
+        title = (f"Top 10 Customers Profits Without Discounts - Quarter: {_change_month_to_quarter(num)}"
+                 f" Year: {from_year}")        
+        print(f"\t\t--------[Top 10 Customers Profits Without Discounts]"
+              f"--------[Quarter: {_change_month_to_quarter(num)} Year: {from_year}]--------\n")
+        Pandas_Format.print_report(df3.reset_index(), 10)
+        print("="*117 + "\n")
+        df3.plot(kind='bar', ax=ax1)
+        ax1.set(title=title, ylabel="Profit")
+    vals = ax1.get_yticks()
+    ax1.set_yticklabels(['${:.0f}'.format(x) for x in vals])
+    plt.show()
+
+def topcust_high_disc(from_month, from_year, to_month, to_year, duration, num):
+    df = df = OrdersOnlyData
+    df = _filter_df_by_date(df, "Order Date", from_month, from_year, to_month,
+                            to_year)
+
+    fig, ax1 = plt.subplots(figsize=(17,5))
+
+    df2 = df[df.Discount > 0]
+    df3 = df2.sort_values(by='Profit', ascending=True)
+    df3 = df3[["Customer Name", "Profit", "Discount"]]
+    df3 = df3.groupby(['Customer Name', 'Discount']).sum().sort_values(by='Profit', ascending=True)
+    df3 = df3[:10]
+    if duration == 'm' or duration == 'M':
+        print("="*117 + "\n")
+        title = (f"Bottom 10 Customer Profits With Discounts - Month: {from_month}"
+                 f" Year: {from_year}")
+        print(f"\t\t--------[Bottom 10 Customer Profits With Discounts]"
+              f"--------[Month: {from_month} Year: {from_year}]--------\n")
+        Pandas_Format.print_report(df3.reset_index(), 10)
+        print("="*117 + "\n")
+    else:
+        print("="*117 + "\n")
+        title = (f"Bottom 10 Customer Profits With Discounts - Quarter: {_change_month_to_quarter(num)}"
+                 f" Year: {from_year}")        
+        print(f"\t\t--------[Bottom 10 Customer Profits With Discounts]"
+              f"--------[Quarter: {_change_month_to_quarter(num)} Year: {from_year}]--------\n")
+        Pandas_Format.print_report(df3.reset_index(), 10)
+        print("="*117 + "\n")
+    df3 = df3.reset_index().pivot('Customer Name', 'Discount', 'Profit')
+    df3.plot(kind='bar', stacked=True, ax=ax1)
+    ax1.set_title(title)
+    vals = ax1.get_yticks()
+    ax1.set_yticklabels(['${:,.0f}'.format(x) for x in vals])
+    current_handles, _ = plt.gca().get_legend_handles_labels()
+    reversed_handles = reversed(current_handles)
+    labels = sorted(df['Discount'].unique(), reverse=True)
+    for a in range(0, len(labels)):
+        labels[a] = '{:.0f}%'.format(float(labels[a]) * 100)
+    plt.legend(reversed_handles,labels,loc='lower right', title="Discount")
+    plt.show()
 
 def _generate_bar_chart(df, title, xaxis_rotation, xaxis_df_name, xaxis_label,
                         yaxis_df_name, yaxis_label):

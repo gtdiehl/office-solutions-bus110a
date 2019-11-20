@@ -105,11 +105,10 @@ class BestMenu:
                   "[1] Sales and Profits by Region\n" +
                   "[2] Discounts Given out by Region\n" +
                   "[3] Discounts by Category and Region\n" +
-                  "[4] Analysis Report 4\n" +
-                  "[5] Analysis Report 5\n" +
-                  "[5] Analysis Report 6\n" +
+                  "[4] Top 10 Customers Profits Without Discounts\n" +
+                  "[5] Bottom 10 Customer Profits With Discounts\n" +
                   "")
-            menu_selection = input("Please enter an option [1-6, r to Return to the Main Menu] : ")
+            menu_selection = input("Please enter an option [1-5, r to Return to the Main Menu] : ")
             if menu_selection == "1":
                 self.prompt_for_analysis_filter(1)
             elif menu_selection == "2":
@@ -317,11 +316,9 @@ class BestMenu:
         elif report_num == 3:
             reports.discounts_by_category_and_region(report_range[0], report_range[1], report_range[2], report_range[3], report_type, report_range[0])
         elif report_num == 4:
-            pass
+            reports.topcust_no_disc(report_range[0], report_range[1], report_range[2], report_range[3], report_type, report_range[0])
         elif report_num == 5:
-            pass
-        elif report_num == 6:
-            pass
+            reports.topcust_high_disc(report_range[0], report_range[1], report_range[2], report_range[3], report_type, report_range[0])
         else:
             print("[ERROR] Report does not exist!")
 
