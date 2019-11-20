@@ -366,22 +366,24 @@ def topcust_high_disc(from_month, from_year, to_month, to_year, duration, num):
     df3 = df3[["Customer Name", "Profit", "Discount"]]
     df3 = df3.groupby(['Customer Name', 'Discount']).sum().sort_values(by='Profit', ascending=True)
     df3 = df3[:10]
+    text_df3 = df3.reset_index()
+    text_df3['Discount'] = text_df3['Discount'].map('{:.0%}'.format)
     if duration == 'm' or duration == 'M':
-        print("="*117 + "\n")
+        #print("="*117 + "\n")
         title = (f"Bottom 10 Customer Profits With Discounts - Month: {from_month}"
                  f" Year: {from_year}")
-        print(f"\t\t--------[Bottom 10 Customer Profits With Discounts]"
-              f"--------[Month: {from_month} Year: {from_year}]--------\n")
-        Pandas_Format.print_report(df3.reset_index(), 10)
-        print("="*117 + "\n")
+        #print(f"\t\t--------[Bottom 10 Customer Profits With Discounts]"
+        #      f"--------[Month: {from_month} Year: {from_year}]--------\n")
+        #Pandas_Format.print_report(text_df3, 10)
+        #print("="*117 + "\n")
     else:
-        print("="*117 + "\n")
+        #print("="*117 + "\n")
         title = (f"Bottom 10 Customer Profits With Discounts - Quarter: {_change_month_to_quarter(num)}"
                  f" Year: {from_year}")        
-        print(f"\t\t--------[Bottom 10 Customer Profits With Discounts]"
-              f"--------[Quarter: {_change_month_to_quarter(num)} Year: {from_year}]--------\n")
-        Pandas_Format.print_report(df3.reset_index(), 10)
-        print("="*117 + "\n")
+        #print(f"\t\t--------[Bottom 10 Customer Profits With Discounts]"
+        #      f"--------[Quarter: {_change_month_to_quarter(num)} Year: {from_year}]--------\n")
+        #Pandas_Format.print_report(text_df3, 10)
+        #print("="*117 + "\n")
     df3 = df3.reset_index().pivot('Customer Name', 'Discount', 'Profit')
     df3.plot(kind='bar', stacked=True, ax=ax1)
     ax1.set_title(title)
