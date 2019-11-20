@@ -395,6 +395,7 @@ def topcust_high_disc(from_month, from_year, to_month, to_year, duration, num):
     for a in range(0, len(labels)):
         labels[a] = '{:.0f}%'.format(float(labels[a]) * 100)
     plt.legend(reversed_handles,labels,loc='lower right', title="Discount")
+    ax1.set_yticklabels(['${:,.0f}'.format(x).replace('$-', '-$') for x in vals])
     plt.show()
 
 def _generate_bar_chart(df, title, xaxis_rotation, xaxis_df_name, xaxis_label,
