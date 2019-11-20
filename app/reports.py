@@ -21,6 +21,10 @@ ordersinfo = OrdersOnlyData[["Order Date", "Product Name", "Quantity", "Profit"]
 
 def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, duration, num):
     fitered_ordersinfo = _filter_df_by_date(ordersinfo, "Order Date", from_month, from_year, to_month, to_year)
+    if fitered_ordersinfo.empty:
+        print("\nNo data exists for the specified time period.\n")
+        return
+    
     fitered_ordersinfo_sum = fitered_ordersinfo[["Product Name", "Profit", "Quantity", "Order Date"]]\
         .groupby(["Product Name"]).sum()
     fitered_ordersinfo_sum = fitered_ordersinfo_sum.reset_index()
@@ -55,7 +59,10 @@ def profit_of_ten_products_ave(from_month, from_year, to_month, to_year, sort, d
 def active_customer_report(from_month, from_year, to_month, to_year, sort, duration, num):
     customers = OrdersOnlyData[["Order Date", "Customer Name", "Profit"]]
     filtered_customers = _filter_df_by_date(customers, "Order Date", from_month, from_year, to_month, to_year)
-
+    if filtered_customers.empty:
+        print("\nNo data exists for the specified time period.\n")
+        return
+    
     unique_customer_list = filtered_customers["Customer Name"].unique()
     num_of_orders_dic = {}
     for cust in unique_customer_list:
@@ -69,39 +76,54 @@ def active_customer_report(from_month, from_year, to_month, to_year, sort, durat
     filtered_customers_sum = filtered_customers_sum.sort_values(by="Profit", ascending=sort)
     print("\n\n" + "="*117)
     if sort and duration == 'q':
-        title = "Least Profitable Customer Report - Quarter: " + str(_change_month_to_quarter(num)) + " Year: " + str(from_year)
-        print("\t\t\t\t--------[Least Profitable Customer Report]--------[Quarter: " +
-              str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
+        title = (f"Least Profitable Customer Report - Quarter:"
+                 f"{_change_month_to_quarter(num)} Year: {from_year}")
+        
+        print(f"\t\t\t\t--------[Least Profitable Customer Report]--------"
+              "[Quarter: {_change_month_to_quarter(num)} Year: {from_year}]"
+              "--------\n")
     elif sort and duration == 'm':
-        title = "Least Profitable Customer Report - Month: " + str(num) + " Year: " + str(from_year)
-        print("\t\t\t\t--------[Least Profitable Customer Report]--------[Month: " +
-              str(num) + " Year: " + str(from_year) + "]--------\n")
+        title = (f"Least Profitable Customer Report - Month: {num} Year: "
+                 f"{from_year}")
+        
+        print(f"\t\t\t\t--------[Least Profitable Customer Report]--------"
+              "[Month: {num} Year: {from_year}]--------\n")
     elif sort is False and duration == 'q':
-        title = "Most Profitable Customer Report - Quarter: " + str(_change_month_to_quarter(num)) + " Year: " + str(from_year)
-        print("\t\t\t\t--------[Most Profitable Customer Report]--------[Quarter: " +
-              str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
+        title = (f"Most Profitable Customer Report - Quarter: "
+                 f"{_change_month_to_quarter(num)} Year: {from_year}")
+            
+        print(f"\t\t\t\t--------[Most Profitable Customer Report]--------"
+              f"[Quarter: {_change_month_to_quarter(num)} Year: {from_year}]"
+              f"--------\n")
+        
     elif sort is False and duration == 'm':
-        title = "Most Profitable Customer Report - Month: " + str(num) + " Year: " + str(from_year)
-        print("\t\t\t\t--------[Least Profitable Customer Report]--------[Month: " +
-              str(num) + " Year: " + str(from_year) + "]--------\n")
+        title = (f"Most Profitable Customer Report - Month: {num} Year: "
+                 f"{from_year}")
+        print(f"\t\t\t\t--------[Least Profitable Customer Report]--------"
+              f"[Month: {num} Year: {from_year}]--------\n")
+        
     Pandas_Format.print_report(filtered_customers_sum, 10)
     print("=" * 117 + "\n")
     chart_df = filtered_customers_sum[:10]
-    _generate_bar_chart_with_line_twinx(chart_df, title, 0, "Customer Name", "Customer Name", "Profit",
-                                        "Total Num of Orders", "Profit", "Total Num of Orders")
+    _generate_bar_chart_with_line_twinx(chart_df, title, 0, "Customer Name",
+                                        "Customer Name", "Profit", 
+                                        "Total Num of Orders", "Profit", 
+                                        "Total Num of Orders")
 
-def chart_example_four(year):
+def sales_and_profits_by_region_yearly(year):
     sales = {}
     profits = {}
 
     df = OrdersOnlyData  
-
     a = 1.5
     for i in range(1, 13):
         s = _filter_df_by_date(df, "Order Date", i, year, i, year)
         sales[a] = s['Sales'].sum()
         profits[a] = s['Profit'].sum()
         a = a + 4
+    if s.empty:
+        print("\nNo data exists for the specified time period.\n")
+        return
     sales_list = sorted(sales.items())
     profits_list = sorted(profits.items())
     
@@ -119,7 +141,8 @@ def chart_example_four(year):
     
     fig, ax = plt.subplots(figsize=(17, 6))
     ax2 = ax.twinx()
-    ax.set_title(f"Sales and Profits by Region per Month vs Company Total per Month for the Year {year}")
+    ax.set_title(f"Sales and Profits by Region per Month vs Company Total per "
+                 f"Month for the Year {year}")
 
     ax.set(ylabel='Dollar Amount')
     result.plot(kind='bar', ax=ax)
@@ -131,37 +154,53 @@ def chart_example_four(year):
     ax2.set_yticklabels(['${:,.0f}'.format(x) for x in vals]) 
     i = 0
     for x, y in sales.items():
-        ax2.text(x+0.2, y, '${:,.0f}'.format(y), horizontalalignment='left', size='medium', color='black', weight='bold')
+        ax2.text(x+0.2, y, '${:,.0f}'.format(y), horizontalalignment='left',
+                 size='medium', color='black', weight='bold')
         i = i + 1
     for x, y in profits.items():
-        ax2.text(x+0.2, y, '${:,.0f}'.format(y), horizontalalignment='left', size='medium', color='black', weight='bold')
+        ax2.text(x+0.2, y, '${:,.0f}'.format(y), horizontalalignment='left',
+                 size='medium', color='black', weight='bold')
         i = i + 1
     ax.legend(loc='upper left')
     plt.show()
 
-def chart_example_three(from_month, from_year, to_month, to_year, duration, num):
+def sales_and_profits_by_region(from_month, from_year, to_month, to_year,
+                                duration, num):
 
     df = OrdersOnlyData
-    df = _filter_df_by_date(df, "Order Date", from_month, from_year, to_month, to_year)
+    df = _filter_df_by_date(df, "Order Date", from_month, from_year, to_month,
+                            to_year)
+    if df.empty:
+        print("\nNo data exists for the specified time period.\n")
+        return
     
     fig, ax = plt.subplots(figsize=(17, 6))
     df = df[['Sales', 'Profit','Region']]
     df_groupby_sales = df.groupby(['Region']).sum()
     df_groupby_sales = df_groupby_sales.reset_index()
-    df_groupby_sales.set_index('Region')[['Sales', 'Profit']].plot(kind='bar', ax=ax)
-    if duration == 'm':
-        plt.title(f'Sales and Profits by Region - Month: {from_month} Year: {from_year}')
+    df_groupby_sales.set_index('Region')[['Sales', 'Profit']].plot(kind='bar',
+                                                                   ax=ax)
+    if duration == 'm' or duration == 'M':
+        plt.title(f"Sales and Profits by Region - Month: {from_month} Year: "
+                  f"{from_year}")
     else:
-        plt.title(f'Sales and Profits by Region - Quarter: {num} Year: {from_year}')
+        plt.title(f"Sales and Profits by Region - Quarter: {_change_month_to_quarter(num)} Year: "
+                  f"{from_year}")
+        
     ax.set_xlabel("Region")
     ax.set_ylabel("Dollar Amount")
     vals = ax.get_yticks()
     ax.set_yticklabels(['${:,.0f}'.format(x).replace('$-', '-$') for x in vals])
     plt.show()
 
-def chart_example_one(from_month, from_year, to_month, to_year, duration, num):
+def discounts_by_region(from_month, from_year, to_month, to_year, duration, num):
     df = OrdersOnlyData
-    df = _filter_df_by_date(df, "Order Date", from_month, from_year, to_month, to_year)
+    df = _filter_df_by_date(df, "Order Date", from_month, from_year, to_month,
+                            to_year)
+    if df.empty:
+        print("\nNo data exists for the specified time period.\n")
+        return
+    
     df['Discount'] = pd.Series(["{0:.2f}%".format(val * 100) for val in df['Discount']], index=df.index)
     
     fig, ax = plt.subplots(figsize=(17, 6))
@@ -173,10 +212,12 @@ def chart_example_one(from_month, from_year, to_month, to_year, duration, num):
     # manipulate y-axis label
     vals = ax.get_yticks()
     ax.set_yticklabels(['{:.0f}%'.format(x) for x in vals])
-    if duration == 'm':
-        plt.title(f'Discounts Given out by Region - Month: {from_month} Year: {from_year}')
+    if duration == 'm' or duration == 'M':
+        plt.title(f"Discounts Given out by Region - Month: {from_month} Year: "
+                  f"{from_year}")
     else:
-        plt.title(f'Discounts Given out by Region - Quarter: {num} Year: {from_year}')
+        plt.title(f"Discounts Given out by Region - Quarter: {_change_month_to_quarter(num)} Year: "
+                  f"{from_year}")
     # fix the legend
     current_handles, _ = plt.gca().get_legend_handles_labels()
     reversed_handles = reversed(current_handles)
@@ -184,9 +225,14 @@ def chart_example_one(from_month, from_year, to_month, to_year, duration, num):
     plt.legend(reversed_handles,labels,loc='lower right', title="Discount")
     plt.show()
 
-def chart_example_five(from_month, from_year, to_month, to_year, duration, num):
+def discounts_by_category_and_region(from_month, from_year, to_month, to_year,
+                                     duration, num):
     df = OrdersOnlyData
-    df = _filter_df_by_date(df, "Order Date", from_month, from_year, to_month, to_year)
+    df = _filter_df_by_date(df, "Order Date", from_month, from_year, to_month,
+                            to_year)
+    if df.empty:
+        print("\nNo data exists for the specified time period.\n")
+        return
     
     region_central_df = df[(df['Region'] == 'Central')]
     region_east_df = df[(df['Region'] == 'East')]
@@ -256,16 +302,20 @@ def chart_example_five(from_month, from_year, to_month, to_year, duration, num):
             for a in range(0, len(labels)):
                 labels[a] = '{:.0f}%'.format(float(labels[a]) * 100)
             labels = reversed(labels)
-            axs[x, y].legend(reversed_handles, labels, loc='lower right', title="Discount")
+            axs[x, y].legend(reversed_handles, labels, loc='lower right',
+                             title="Discount")
     
-    if duration == 'm':
-        plt.suptitle(f'Discounts by Product Category and Sub-Category by Region - Month: {from_month} Year: {from_year}')
+    if duration == 'm' or duration == 'M':
+        plt.suptitle(f"Discounts by Product Category and Sub-Category by "
+                     f"Region - Month: {from_month} Year: {from_year}")
     else:
-        plt.suptitle(f'Discounts by Product Category and Sub-Category by Region - Quarter: {num} Year: {from_year}')
+        plt.suptitle(f"Discounts by Product Category and Sub-Category by "
+                     f"Region - Quarter: {_change_month_to_quarter(num)} Year: {from_year}")
     plt.subplots_adjust(wspace=0.2, hspace=0.6)
     plt.show()
 
-def _generate_bar_chart(df, title, xaxis_rotation, xaxis_df_name, xaxis_label, yaxis_df_name, yaxis_label):
+def _generate_bar_chart(df, title, xaxis_rotation, xaxis_df_name, xaxis_label,
+                        yaxis_df_name, yaxis_label):
 
     sns.set(style="whitegrid")
     fig, ax = plt.subplots(figsize=(15, 6))
@@ -280,8 +330,10 @@ def _generate_bar_chart(df, title, xaxis_rotation, xaxis_df_name, xaxis_label, y
     
     plt.show()
 
-def _generate_bar_chart_with_line_twinx(df, title, xaxis_rotation, xaxis_df_name, xaxis_label, yaxis1_df_name,
-                                        yaxis2_df_name, yaxis1_label, yaxis2_label):
+def _generate_bar_chart_with_line_twinx(df, title, xaxis_rotation,
+                                        xaxis_df_name, xaxis_label,
+                                        yaxis1_df_name, yaxis2_df_name,
+                                        yaxis1_label, yaxis2_label):
     sns.set(style="whitegrid")
     fig, ax = plt.subplots(figsize=(19, 6))
     
@@ -303,12 +355,15 @@ def _generate_bar_chart_with_line_twinx(df, title, xaxis_rotation, xaxis_df_name
     
     ax2.set(ylabel=yaxis2_label)
     
-    ax2.set_yticks(np.linspace(ax2.get_yticks()[0], ax2.get_yticks()[-1], len(ax.get_yticks())))
+    ax2.set_yticks(np.linspace(ax2.get_yticks()[0], ax2.get_yticks()[-1],
+                               len(ax.get_yticks())))
     ax2.yaxis.set_major_locator(plt.LinearLocator(numticks=NUM_TICKS))
     
     i = 0
     for line in df.index.values.tolist():
-        ax2.text(i+0.1, df[yaxis2_df_name][line], df[yaxis2_df_name][line], horizontalalignment='left', size='medium', color='black', weight='bold')
+        ax2.text(i+0.1, df[yaxis2_df_name][line], df[yaxis2_df_name][line],
+                 horizontalalignment='left', size='medium', color='black',
+                 weight='bold')
         i = i +1
     plt.show()
 
@@ -323,7 +378,8 @@ def _change_month_to_quarter(num):
         return 4
 
         
-def _filter_df_by_date(df, date_column, from_month, from_year, to_month, to_year):
+def _filter_df_by_date(df, date_column, from_month, from_year, to_month,
+                       to_year):
     if to_month == 12:
         to_month = 1
         to_year = to_year + 1

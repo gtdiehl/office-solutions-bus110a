@@ -76,7 +76,7 @@ class BestMenu:
                   "[2] Least Profitable Product Report\n" +
                   "[3] Most Profitable Customer Report\n" +
                   "[4] Least Profitable Customer Report\n\n" +
-                  "==========[Report Sub-Menus]==========\n"
+                  "==========[Report Sub-Menus]==========\n\n"
                   "[5] Profit Analysis Reports menu\n" +
                   "")
             menu_selection = input("Please enter an option [1-5, r to Return to the Main Menu] : ")
@@ -99,7 +99,7 @@ class BestMenu:
 
     def _report_analysis_submenu(self):
         while True:
-            print("\n------------[Report Menu]------------")
+            print("\n------[Profit Analysis Report Menu]------")
             print()
             print("" +
                   "[1] Sales and Profits by Region\n" +
@@ -132,9 +132,7 @@ class BestMenu:
     def prompt_for_report_filter(self, report_num):
         report_range = []
         type = ""
-        
-       
-
+             
         while True:
             report_type = input("Do you want the report by Quarter or Month? [Q - Quarterly, M - Monthly]: ")
             if report_type == 'q' or report_type == 'Q':
@@ -218,9 +216,7 @@ class BestMenu:
     def prompt_for_analysis_filter(self, report_num):
         report_range = []
         type = ""
-        
-       
-
+ 
         while True:
             if not report_num == 1:
                 report_type = input("Do you want the report by Quarter or Month? [Q - Quarterly, M - Monthly]: ")
@@ -313,13 +309,13 @@ class BestMenu:
         
         if report_num == 1:
             if report_type == 'y' or report_type == 'Y':
-                reports.chart_example_four(year)
+                reports.sales_and_profits_by_region_yearly(year)
             else:
-                reports.chart_example_three(report_range[0], report_range[1], report_range[2], report_range[3], type, report_range[0])
+                reports.sales_and_profits_by_region(report_range[0], report_range[1], report_range[2], report_range[3], report_type, report_range[0])
         elif report_num == 2:
-            reports.chart_example_one(report_range[0], report_range[1], report_range[2], report_range[3], type, report_range[0])
+            reports.discounts_by_region(report_range[0], report_range[1], report_range[2], report_range[3], report_type, report_range[0])
         elif report_num == 3:
-            reports.chart_example_five(report_range[0], report_range[1], report_range[2], report_range[3], type, report_range[0])
+            reports.discounts_by_category_and_region(report_range[0], report_range[1], report_range[2], report_range[3], report_type, report_range[0])
         elif report_num == 4:
             pass
         elif report_num == 5:
