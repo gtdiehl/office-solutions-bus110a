@@ -5,27 +5,24 @@ from datetime import date
 def topcust_no_disc():
     xl = pd.ExcelFile("SalesDataFull.xlsx")
     df = xl.parse("Orders")
-    df = _filter_df_by_date(df, "Order Date", 1, 2015, 1, 2015)
+    df = _filter_df_by_date(df, "Order Date", 3, 2017, 3, 2017)
     
     df2 = df[df.Discount == 0]
     df3 = df2.sort_values(by='Profit', ascending= False)
     df3 = df3[["Customer Name", "Profit"]]
-    df3 = df3.groupby(["Customer Name"]).count()
+    df3 = df3.groupby(["Customer Name"]).sum()
     df3.reset_index()
     df3 = df3.sort_values(by="Profit", ascending=False)
     df3 = df3[:10]
     print(df3)
-    #Defining 2 plot axis and size of graph
     fig = plt.figure(figsize=(20,5))
-    #1x2 Grid
     ax1 = fig.add_subplot(1,2,1)
     
-    df3 = df3.rename(columns={"Customer Name":"Customer_Name"})
-    
-    ax1.bar(df3['Customer_Name'], df3['Profit'])
-    ax1.set_xticklabels(df3['Customer_Name'], rotation=60, horizontalalignment='right')
+    df3.plot(kind='bar', ax=ax1)
     ax1.set_title("Top 10 Customers Profits Without Discounts")
     ax1.set_ylabel("Profit")
+    vals = ax1.get_yticks()
+    ax1.set_yticklabels(['${:.0f}'.format(x) for x in vals])
  
 def _filter_df_by_date(df, date_column, from_month, from_year, to_month, to_year):
     filtered_data = df[
