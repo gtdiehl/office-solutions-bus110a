@@ -321,7 +321,7 @@ def topcust_no_disc(from_month, from_year, to_month, to_year, duration, num):
                             to_year)
     if df.empty:
         print("\nNo data exists for the specified time period.\n")
-    return
+        return
     
     df2 = df[df.Discount == 0]
     df3 = df2.sort_values(by='Profit', ascending= False)
@@ -364,7 +364,7 @@ def topcust_high_disc(from_month, from_year, to_month, to_year, duration, num):
 
     if df.empty:
         print("\nNo data exists for the specified time period.\n")
-    return
+        return
 
     fig, ax1 = plt.subplots(figsize=(17,5))
 
