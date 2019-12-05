@@ -458,6 +458,60 @@ def _generate_bar_chart_with_line_twinx(df, title, xaxis_rotation,
         i = i +1
     plt.show()
 
+def dashboard_report(from_month, from_year, to_month, to_year, sort, duration, num):
+    metrics_df = _filter_df_by_date(OrdersOnlyData, "Order Date", from_month, from_year, to_month, to_year)
+    qty = metrics_df[['Category', 'Quantity']].groupby(['Category']).count()
+    sales = metrics_df[['Category', 'Sales']].groupby(['Category']).sum()
+    profit = metrics_df[['Category', 'Profit']].groupby(['Category']).sum()
+    result = pd.concat([qty, sales, profit], axis=1, sort=False).reset_index()
+    result['Profit Ratio'] = (result.loc[:, "Profit"] / result.loc[:, "Sales"]) * 100
+    result.loc[3] = ['Total'] + [result['Quantity'].sum(), result['Sales'].sum(), result['Profit'].sum(),
+                                 result['Profit Ratio'].sum()]
+    result = result.round({'Profit Ratio': 1})
+    result['Sales'] = result['Sales'].astype(int).apply(lambda x: "{:,}".format(x))
+    result['Sales'] = '$' + result['Sales'].astype(str)
+
+    result['Profit'] = result['Profit'].astype(int).apply(lambda x: "{:,}".format(x))
+    result['Profit'] = '$' + result['Profit'].astype(str)
+    result['Profit Ratio'] = result['Profit Ratio'].astype(str) + '%'
+    if duration == 'q':
+        print("\t\t\t\t--------[Sales and Profits by Category]--------[Quarter: " +
+              str(_change_month_to_quarter(num)) + " Year: " + str(from_year) + "]--------\n")
+    elif duration == 'm':
+        print("\t\t\t\t--------[Sales and Profits by Category]--------[Month: " +
+              str(num) + " Year: " + str(from_year) + "]--------\n")
+    Pandas_Format.print_report(result, 10)
+    print("="*117 + "\n")
+
+def dashboard_pie_graphs(from_month, from_year, to_month, to_year, sort, duration, num):
+    df = _filter_df_by_date(OrdersOnlyData, "Order Date", from_month, from_year, to_month,
+                            to_year)
+    
+    if duration == 'm':
+        duration = 'Month'
+    else:
+        duration = 'Quarter'
+    
+    if duration == 'Quarter':
+        _from = _change_month_to_quarter(from_month)
+    else:
+        _from = from_month
+    
+    df = df[["Category", "Sales", "Profit"]]
+    
+    grp = df.groupby(['Category']).sum().reset_index().set_index('Category')
+    
+    fig1, (ax1, ax2) = plt.subplots(1, 2, figsize=(15,6))
+    labels = df['Category'].unique()
+    ax1.pie(grp['Sales'], autopct='%1.1f%%', labels=labels)
+    ax1.set_title("Sales")
+    ax2.pie(grp['Profit'], autopct='%1.1f%%', labels=labels)
+    ax2.set_title("Profits")
+    plt.suptitle(f"Sales and Profits by Category - {duration}: {_from} Year: {from_year}")
+    plt.show()
+    print("="*117 + "\n")
+
+
 def _change_month_to_quarter(num):
     if 1 <= num <= 3:
         return 1
