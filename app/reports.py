@@ -460,6 +460,11 @@ def _generate_bar_chart_with_line_twinx(df, title, xaxis_rotation,
 
 def dashboard_report(from_month, from_year, to_month, to_year, sort, duration, num):
     metrics_df = _filter_df_by_date(OrdersOnlyData, "Order Date", from_month, from_year, to_month, to_year)
+    
+    if metrics_df.empty:
+        print("\nNo data exists for the specified time period.\n")
+        return
+    
     qty = metrics_df[['Category', 'Quantity']].groupby(['Category']).count()
     sales = metrics_df[['Category', 'Sales']].groupby(['Category']).sum()
     profit = metrics_df[['Category', 'Profit']].groupby(['Category']).sum()
@@ -486,6 +491,9 @@ def dashboard_report(from_month, from_year, to_month, to_year, sort, duration, n
 def dashboard_pie_graphs(from_month, from_year, to_month, to_year, sort, duration, num):
     df = _filter_df_by_date(OrdersOnlyData, "Order Date", from_month, from_year, to_month,
                             to_year)
+    
+    if df.empty:
+        return
     
     if duration == 'm':
         duration = 'Month'
