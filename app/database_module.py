@@ -1,3 +1,4 @@
+import os
 import sqlite3
 
 
@@ -12,7 +13,7 @@ class Database:
         user_db_name (str): This is where we store user_db_name
 
     """
-    def __init__(self, user_db_name='OS_Employee.db'):
+    def __init__(self, user_db_name=(os.path.join(os.path.dirname(__file__), 'OS_Employee.db'))):
         self._user_db_name = str(user_db_name)
 
     def _connect_user_db(self):

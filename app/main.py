@@ -28,7 +28,7 @@ class Main:
         menu_selection = input("Please enter an option [1-2, q to Quit] : ")
         if menu_selection == "1":
             if self.mylogin.login() is True:
-                return menu_module.Menu(self.mydb).createMenu()
+                return menu_module.Menu().createMenu()
         elif menu_selection == "2":
             Add_User.UserController(self.mydb).addNewUser()
         elif menu_selection == "q" or menu_selection == "Q":
