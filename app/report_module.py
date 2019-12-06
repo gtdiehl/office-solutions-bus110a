@@ -6,17 +6,15 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-pd.set_option('mode.chained_assignment', None)
-
-
-
 class Report:
 
     DISPLAY_LINE_STR = ("="*117)
     
     def __init__(self):
-        self.fo = fo.FormatOutput()
+        pd.set_option('mode.chained_assignment', None)
         SalesDataFull = pd.ExcelFile(os.path.join(os.path.dirname(__file__), "SalesDataFull.xlsx"))
+
+        self.fo = fo.FormatOutput()
         self.orders_full_df = SalesDataFull.parse("Orders")
         self.orders_partial_df = \
             self.orders_full_df[["Order Date", "Product Name", "Quantity", 
@@ -160,10 +158,9 @@ class Report:
         sales = {}
         profits = {}
     
-        df = self.orders_full_df  
         a = 1.5
         for i in range(1, 13):
-            s = self._filter_df_by_date(df, "Order Date", i, year, i, year)
+            s = self._filter_df_by_date(self.orders_full_df, "Order Date", i, year, i, year)
             sales[a] = s['Sales'].sum()
             profits[a] = s['Profit'].sum()
             a = a + 4
@@ -176,7 +173,7 @@ class Report:
         x1, y1 = zip(*profits_list)
         x2, y2 = zip(*sales_list)
             
-        df = self._filter_df_by_date(df, "Order Date", 1, year, 12, year)
+        df = self._filter_df_by_date(self.orders_full_df, "Order Date", 1, year, 12, year)
         df.set_index(df["Order Date"],inplace=True)
         
         df1 = df.groupby([pd.Grouper(freq='M'), 'Region'])['Profit'].sum()
@@ -215,8 +212,7 @@ class Report:
     def sales_and_profits_by_region(self, from_month, from_year, to_month,
                                     to_year, duration, num):
     
-        df = self.orders_full_df
-        df = self._filter_df_by_date(df, "Order Date", from_month, from_year,
+        df = self._filter_df_by_date(self.orders_full_df, "Order Date", from_month, from_year,
                                      to_month, to_year)
         if df.empty:
             print("\nNo data exists for the specified time period.\n")
@@ -247,8 +243,7 @@ class Report:
     def discounts_by_region(self, from_month, from_year, to_month, to_year, 
                             duration, num):
         
-        df = self.orders_full_df
-        df = self._filter_df_by_date(df, "Order Date", from_month, from_year, 
+        df = self._filter_df_by_date(self.orders_full_df, "Order Date", from_month, from_year, 
                                      to_month, to_year)
         if df.empty:
             print("\nNo data exists for the specified time period.\n")
@@ -282,8 +277,7 @@ class Report:
     
     def discounts_by_category_and_region(self, from_month, from_year, to_month,
                                          to_year, duration, num):
-        df = self.orders_full_df
-        df = self._filter_df_by_date(df, "Order Date", from_month, from_year, to_month,
+        df = self._filter_df_by_date(self.orders_full_df, "Order Date", from_month, from_year, to_month,
                                 to_year)
         if df.empty:
             print("\nNo data exists for the specified time period.\n")
@@ -386,8 +380,7 @@ class Report:
     def topcust_no_disc(self, from_month, from_year, to_month, to_year, 
                         duration, num):
     
-        df = self.orders_full_df
-        df = self._filter_df_by_date(df, "Order Date", from_month, from_year, 
+        df = self._filter_df_by_date(self.orders_full_df, "Order Date", from_month, from_year, 
                                      to_month, to_year)
         if df.empty:
             print("\nNo data exists for the specified time period.\n")
@@ -431,8 +424,7 @@ class Report:
     def topcust_high_disc(self, from_month, from_year, to_month, to_year, 
                           duration, num):
         
-        df = self.orders_full_df
-        df = self._filter_df_by_date(df, "Order Date", from_month, from_year, 
+        df = self._filter_df_by_date(self.orders_full_df, "Order Date", from_month, from_year, 
                                      to_month, to_year)
     
         if df.empty:
