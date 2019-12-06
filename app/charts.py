@@ -251,6 +251,27 @@ def chart_example_five():
     plt.subplots_adjust(wspace=0.2, hspace=0.6)
     plt.show()
 
+def dashboard_pie_graphs():
+    xl = pd.ExcelFile("SalesDataFull.xlsx")
+    df = xl.parse("Orders")
+    df = _filter_df_by_date(df, "Order Date", 1, 2014, 4,
+                            2014)
+
+    df = df[["Category", "Sales", "Profit"]]
+    
+    grp = df.groupby(['Category']).sum().reset_index().set_index('Category')
+    print(grp)
+    
+    fig1, (ax1, ax2) = plt.subplots(1, 2, figsize=(15,6))
+    labels = df['Category'].unique()
+    ax1.pie(grp['Sales'], autopct='%1.1f%%', labels=labels)
+    ax1.set_title("Sales")
+    ax2.pie(grp['Profit'], autopct='%1.1f%%', labels=labels)
+    ax1.set_title("Profits")
+    plt.show()
+    #plot = grp.plot.pie(subplots=True, autopct='%1.1f%%', figsize=(10,3),
+    #                    legend=False, title="Sales and Profits by Category")
+
 #chart_example_one()
 #chart_example_two()
 #chart_example_three()
@@ -262,4 +283,5 @@ def chart_example_five():
 #chart_example_one()
 #chart_example_five()
 #topcust_no_disc()
-topcust_high_disc()
+#topcust_high_disc()
+dashboard_pie_graphs()

@@ -40,13 +40,16 @@ class Menu:
     def _menuLoop(self):
         print("\n----------[Main Menu]----------")
         print("" +
-              "[1] Report Menu\n" +
-              "[2] User Administration Menu\n" +
+              "[1] Dashboard overview\n" +
+              "[2] Report Menu\n" +
+              "[3] User Administration Menu\n" +
               "")
-        menu_selection = input("Please enter an option [1-2, q to Quit] : ")
+        menu_selection = input("Please enter an option [1-3, q to Quit] : ")
         if menu_selection == "1":
-            self._report_submenu_loop()
+            self.prompt_for_dashboard_filter()
         elif menu_selection == "2":
+            self._report_submenu_loop()
+        elif menu_selection == "3":
             self._user_submenu_loop()
         elif menu_selection == "q" or menu_selection == "Q":
             print(self.QUIT_MSG)
@@ -139,6 +142,79 @@ class Menu:
                 print(self.NOT_VALID_CHOICE_MSG)
             else:
                 print(self.NOT_VALID_CHOICE_MSG)
+
+    def prompt_for_dashboard_filter(self):
+        report_range = []
+        type = ""
+             
+        while True:
+            report_type = input("Do you want the report by Quarter or Month? [Q - Quarterly, M - Monthly]: ")
+            if report_type == 'q' or report_type == 'Q':
+
+                while True:
+                    quarter = int(input("Which Quarter? [1 - 4]: "))
+                    if 1 <= quarter <= 4:
+                        break
+                    else:
+                        print("\nNot a valid choice. Please try again.")
+                        continue
+
+                while True:
+                    year = int(input("Which Year? [YYYY format]: "))
+                    if year is None:
+                        print("Year cannot be blank")
+                        continue
+                    else:
+                        while True:
+                            if not self._verifyYear(year):
+                                print("Invalid year. Please enter a valid year in the format of YYYY.")
+                                year = int(input("Which Year? [YYYY format]: "))
+                                continue
+                            else:
+                                type = 'q'
+                                report_range = self.quarter_to_months(quarter, year)
+                                break
+                        break
+
+                break
+
+            elif report_type == 'm' or report_type == 'M':
+                while True:
+                    month = int(input("Which Month? [1 - 12]: "))
+                    if 1 <= month <= 12:
+                        break
+                    else:
+                        print("\nNot a valid choice. Please try again.")
+                        continue
+
+                while True:
+                    year = int(input("Which Year? [YYYY format]: "))
+                    if year is None:
+                        print("Year cannot be blank")
+                        continue
+                    else:
+                        while True:
+                            if not self._verifyYear(year):
+                                print("Invalid year. Please enter a valid year in the format of YYYY.")
+                                year = int(input("Which Year? [YYYY format]: "))
+                                continue
+                            else:
+                                type = 'm'
+                                report_range.append(month)
+                                report_range.append(year)
+                                report_range.append(month)
+                                report_range.append(year)
+                                break
+                        break
+
+                break
+
+            else:
+                print("\nNot a valid choice. Please try again.")
+
+        
+        reports.dashboard_report(report_range[0], report_range[1], report_range[2], report_range[3], False, type, report_range[0])
+        reports.dashboard_pie_graphs(report_range[0], report_range[1], report_range[2], report_range[3], False, type, report_range[0])
 
     def prompt_for_report_filter(self, report_num):
         report_range = []
