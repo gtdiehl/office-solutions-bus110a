@@ -1,4 +1,4 @@
-from app.database import Database
+from app.database_module import Database
 import pytest
 
 

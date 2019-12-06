@@ -1,4 +1,4 @@
-from app.database import Database
+from app.database_module import Database
 from app.Add_User import UserController
 from tests.input_test_base import set_keyboard_input, get_display_output
 import pytest
