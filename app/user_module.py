@@ -1,50 +1,30 @@
 import re
 from email_validator import validate_email, EmailNotValidError
 
+class User:
 
-class UserController:
-    def __init__(self, myDB):
-        self.myDB = myDB
-    
-    def _verifyUserName(self, inputText):
-        # RegEx Search will return None if the string only contains letters
-        # If Numbers, Special Characters, Spaces, etc... are found
-        # function will return a fail message
-        
-        if (re.search(r'[^a-zA-Z]', inputText)) is None:
-            return True
-        else:
-            return False
-    
-    def _verifyPassword(self, password):
-        # Limited to only letters and numbers.
-        string = re.search(r'[^a-zA-Z0-9.]', password)
-        if not bool(string):
-            return True
-        else:
-            return False
-    
-    def _verifyEmailAddress(self, address):
-        # RegEx will validate the E-Mail Address based on RFC 5322
-        # If the e-mail address is not in the proper format the function
-        # will return False
-        if re.search(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', address) is not None:
-            pass
-        else:
-            print("The e-mail address must be in user@domain.com format. Please enter a valid e-Mail address.")
-            return False
+    def __init__(self, mydb):
+        self.mydb = mydb
 
-        try:
-            v = validate_email(address)  # validate and get info
-            email = v["email"]  # replace with normalized form
-            return True
-        except EmailNotValidError as e:
-            # email is not valid, exception message is human-readable
-            print(str(e) + " Please enter in a valid domain name.")
-            return False
+    def deleteuser(self):
+        while True:
+            del_email = input("\nPlease note that E-mail addresses are case-sensitive.\n"
+                            "Enter an e-mail address to be deleted -- or press 'Enter' to return to the menu: ")
+            if not del_email:
+                print("\nNo user accounts were affected.  Returning to the previous menu.")
+                return False
+            results = self.mydb.query_user_db("SELECT EXISTS(SELECT * FROM Employee WHERE Email is ?)", (del_email, ))
+            if results[0] == 1:
+                condel_email = input("Please re-enter e-mail address to confirm deletion: ")
+                userdeleted = self.mydb.delete_user_db("DELETE FROM Employee WHERE Email is ?", (condel_email, ))
+                if userdeleted:
+                    print(f"User {condel_email} has been deleted.")
+                return userdeleted
+            else:
+                print("\nYou have entered an e-mail address that is not in the database.  No user accounts were affected.")
+                return False
 
     def addNewUser(self):
-        
         print("Enter new user information, all information is case-sensitive.")
         while(True):
             newFirstName = input("First Name: ")
@@ -111,10 +91,10 @@ class UserController:
             else:
                 break
         
-        results = self.myDB.query_user_db("SELECT EXISTS(SELECT * FROM Employee WHERE Email is ?)", (newEmailAddress, ))
+        results = self.mydb.query_user_db("SELECT EXISTS(SELECT * FROM Employee WHERE Email is ?)", (newEmailAddress, ))
         if results[0] == 0:
             newUserID = self._getNextUserID()
-            if self.myDB.insert_user_db("INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, Password) "
+            if self.mydb.insert_user_db("INSERT INTO Employee (EmployeeID, FirstName, LastName, Email, Password) "
                                         "VALUES (?, ?, ?, ?, ?)", (newUserID, newFirstName, newLastName, newEmailAddress,
                                                                    newUserPassword)):
                 print("\n New User was successfully added")
@@ -125,7 +105,43 @@ class UserController:
             
     def _getNextUserID(self):
         userID = 0
-        results = self.myDB.query_user_db("SELECT EmployeeID from Employee ORDER BY EmployeeID")
+        results = self.mydb.query_user_db("SELECT EmployeeID from Employee ORDER BY EmployeeID")
         userID = int(max(results)) + 1
             
         return userID
+
+    def _verifyEmailAddress(self, address):
+        # RegEx will validate the E-Mail Address based on RFC 5322
+        # If the e-mail address is not in the proper format the function
+        # will return False
+        if re.search(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', address) is not None:
+            pass
+        else:
+            print("The e-mail address must be in user@domain.com format. Please enter a valid e-Mail address.")
+            return False
+
+        try:
+            validate_email(address)  # validate and get info
+            return True
+        except EmailNotValidError as e:
+            # email is not valid, exception message is human-readable
+            print(str(e) + " Please enter in a valid domain name.")
+            return False
+
+    def _verifyUserName(self, inputText):
+        # RegEx Search will return None if the string only contains letters
+        # If Numbers, Special Characters, Spaces, etc... are found
+        # function will return a fail message
+        
+        if (re.search(r'[^a-zA-Z]', inputText)) is None:
+            return True
+        else:
+            return False
+    
+    def _verifyPassword(self, password):
+        # Limited to only letters and numbers.
+        string = re.search(r'[^a-zA-Z0-9.]', password)
+        if not bool(string):
+            return True
+        else:
+            return False

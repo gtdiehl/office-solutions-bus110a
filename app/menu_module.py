@@ -1,5 +1,3 @@
-import deleteuserfunction
-import Add_User
 import report_module
 
 
@@ -25,8 +23,9 @@ class Menu:
     QUARTER_SELECTION_PROMPT = "Which Quarter? [1 - 4]: "
     YEAR_SELECTION_PROMPT = "Which Year? [YYYY format]: "
     
-    def __init__(self):
+    def __init__(self, user):
         self.rp = report_module.Report()
+        self.user = user
 
     def createMenu(self):
         ans = True
@@ -77,9 +76,9 @@ class Menu:
             menu_selection = input("Please enter an option [1-2, r to Return "
                                    "to the Main Menu] : ")
             if menu_selection == "1":
-                Add_User.UserController(self.myDB).addNewUser()
+                self.user.addNewUser()
             elif menu_selection == "2":
-                deleteuserfunction.deleteuser(self.myDB)
+                self.user.deleteuser()
             elif menu_selection == "r" or menu_selection == "R":
                 break
             elif menu_selection == "":

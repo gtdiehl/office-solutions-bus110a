@@ -1,5 +1,5 @@
 from app.database_module import Database
-from app.Add_User import UserController
+from app.user_module import User
 from tests.input_test_base import set_keyboard_input, get_display_output
 import pytest
 
@@ -11,7 +11,7 @@ class TestUser:
     def test_add_user_success(self, setup_db, test_input_first_name, test_input_last_name, test_input_email,
                               test_input_password, expected):
         test_db = Database(setup_db)
-        user = UserController(test_db)
+        user = User(test_db)
         set_keyboard_input([test_input_first_name, test_input_last_name, test_input_email, test_input_password,
                             test_input_password])
         user.addNewUser()
@@ -31,7 +31,7 @@ class TestUser:
     def test_add_user_blank_first_name(self, setup_db, test_input_bad_first_name, test_input_good_first_name, test_input_last_name, test_input_email,
                                        test_input_password, expected):
         test_db = Database(setup_db)
-        user = UserController(test_db)
+        user = User(test_db)
         set_keyboard_input([test_input_bad_first_name, test_input_good_first_name, test_input_last_name,
                             test_input_email, test_input_password, test_input_password])
         user.addNewUser()
@@ -89,7 +89,7 @@ class TestUser:
                               ("fred@@", False)])
     def test_verify_user_name(self, setup_db, test_input, expected):
         mydb = Database(setup_db)
-        user = UserController(mydb)
+        user = User(mydb)
         assert user._verifyUserName(test_input) == expected
 
     @pytest.mark.parametrize("test_input,expected",
@@ -103,7 +103,7 @@ class TestUser:
                               ("123456789012", True)])
     def test_verify_password(self, setup_db, test_input, expected):
         mydb = Database(setup_db)
-        user = UserController(mydb)
+        user = User(mydb)
         assert user._verifyPassword(test_input) == expected
 
     @pytest.mark.parametrize("test_input,expected",
@@ -116,7 +116,7 @@ class TestUser:
                               ("passwor@", False)])
     def test_verify_email_address(self, setup_db, test_input, expected):
         mydb = Database(setup_db)
-        user = UserController(mydb)
+        user = User(mydb)
         assert user._verifyEmailAddress(test_input) == expected
 
     def test_get_next_user_id(self):

@@ -1,7 +1,7 @@
 import pandas as pd
 from datetime import date
 import numpy as np
-import Pandas_Format
+import formatoutput_module as fo
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
@@ -15,6 +15,7 @@ class Report:
     DISPLAY_LINE_STR = ("="*117)
     
     def __init__(self):
+        self.fo = fo.FormatOutput()
         SalesDataFull = pd.ExcelFile(os.path.join(os.path.dirname(__file__), "SalesDataFull.xlsx"))
         self.orders_full_df = SalesDataFull.parse("Orders")
         self.orders_partial_df = \
@@ -77,7 +78,7 @@ class Report:
             print(f"\t\t\t\t--------[Most Profitable Product Report]--------"
                   f"[Month: {num} Year: {from_year}]--------\n")
             
-        Pandas_Format.print_report(fitered_ordersinfo_sum, 10)
+        self.fo.print_report(fitered_ordersinfo_sum, 10)
         print(self.DISPLAY_LINE_STR + "\n")
         chart_df = fitered_ordersinfo_sum[:10]
         self._generate_bar_chart(chart_df, title, 90, "Product Name", 
@@ -145,7 +146,7 @@ class Report:
             print(f"\t\t\t\t--------[Least Profitable Customer Report]--------"
                   f"[Month: {num} Year: {from_year}]--------\n")
             
-        Pandas_Format.print_report(filtered_customers_sum, 10)
+        self.fo.print_report(filtered_customers_sum, 10)
         print(self.DISPLAY_LINE_STR + "\n")
         chart_df = filtered_customers_sum[:10]
         self._generate_bar_chart_with_line_twinx(chart_df, title, 0, 
@@ -408,7 +409,7 @@ class Report:
                      f"{from_month} Year: {from_year}")
             print(f"\t\t--------[Top 10 Customers Profits Without Discounts]"
                   f"--------[Month: {from_month} Year: {from_year}]--------\n")
-            Pandas_Format.print_report(df3.reset_index(), 10)
+            self.fo.print_report(df3.reset_index(), 10)
             print(self.DISPLAY_LINE_STR + "\n")
             df3.plot(kind='bar', ax=ax1)
             ax1.set(title=title, ylabel="Profit")
@@ -419,7 +420,7 @@ class Report:
             print(f"\t\t--------[Top 10 Customers Profits Without Discounts]"
                   f"--------[Quarter: {self._change_month_to_quarter(num)} "
                   f"Year: {from_year}]--------\n")
-            Pandas_Format.print_report(df3.reset_index(), 10)
+            self.fo.print_report(df3.reset_index(), 10)
             print(self.DISPLAY_LINE_STR + "\n")
             df3.plot(kind='bar', ax=ax1)
             ax1.set(title=title, ylabel="Profit")
@@ -574,7 +575,7 @@ class Report:
         elif duration == 'm':
             print(f"\t\t\t\t--------[Sales and Profits by Category]--------"
                   f"[Month: {num} Year: {from_year}]--------\n")
-        Pandas_Format.print_report(result, 10)
+        self.fo.print_report(result, 10)
         print(self.DISPLAY_LINE_STR + "\n")
     
     def dashboard_pie_graphs(self, from_month, from_year, to_month, to_year, 
